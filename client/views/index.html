@@ -1,21 +1,6 @@
-<!DOCTYPE>
-<html ng-app="meanStoreManagementSystem">
-    <head>
-        <title>Store Management System</title>
-        
-    </head>
-    <body>
-        <div ng-controller="homeController">
-        <h1>There are {{meetings.length}} meetups</h1>
-        <ul>
-          <li ng-repeat="m in meetings">
-            {{m.name}}
-          </li>
-        </ul>
-      </div>
-        <script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/angularjs/1.5.6/angular.js"></script>
-        <script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/angularjs/1.5.6/angular-resource.js"></script>
-        <script type="text/javascript" src="/js/app.js"></script>
-        <script type="text/javascript" src="/js/controllers/homeController.js"></script>
-    </body>
-</html>
+<h1>There are {{meetings.length}} meetups</h1>
+<ul>
+    <li ng-repeat="m in meetings">
+        {{m.name}}
+    </li>
+</ul>
