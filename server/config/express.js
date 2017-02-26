@@ -3,7 +3,7 @@ const path = require('path')
 
 module.exports = function(app, config) {
 
-    app.get('/', function (req, res) {
+    app.get('/', (req, res) => {
         res.sendFile(config.rootPath + '/client/views/_layout.html')
     })
 
