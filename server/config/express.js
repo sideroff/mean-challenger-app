@@ -1,7 +1,10 @@
+const express = require('express')
+const path = require('path')
+
 module.exports = function(app, config) {
 
     app.get('/', function (req, res) {
-        res.send('Hello from express')
+        res.sendFile(config.rootPath + '/client/views/index.html')
     })
 
     app.use(express.static(path.join(config.rootPath, 'client')))
