@@ -2,20 +2,13 @@ const crypto = require('crypto')
 
 
 module.exports = {
-    generatePasswordHash: function (password, salt, iterations = 10000) {
-        salt = salt || generateSalt()
-        var hash = crypto.pbkdf2(password, salt, iterations);
+    generateHashedPassword: function (password, salt, iterations = 10000, callback) {
+        crypto.pbkdf2(password, salt, iterations, 512, 'sha512', callback)        
+    },
+    generateSalt: function () {
+        let salt = crypto.randomBytes(128).toString('base64')
 
-        return {
-            salt: salt,
-            hash: hash,
-            iterations: iterations
-        }
-    }    
-}
+        return salt
+    }
 
-function generateSalt() {
-    let salt = crypto.randomBytes(128).toString('base64')
-
-    return salt
 }
