@@ -9,11 +9,11 @@
   "author": "",
   "license": "MIT",
   "dependencies": {
+    "bcrypt": "1.0.2",
     "body-parser": "1.16.1",
     "express": "4.14.1",
     "express-jwt": "5.1.0",
     "jsonwebtoken": "7.3.0",
-    "mongoose": "4.8.5",
-    "pbkdf2": "3.0.9"
+    "mongoose": "4.8.5"
   }
 }

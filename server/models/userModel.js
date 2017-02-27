@@ -18,10 +18,6 @@ let UserSchema = new Schema({
         salt: {
             type: String,
             required: validationMsg
-        },
-        iterations: {
-            type: Number,
-            required: validationMsg
         }
     },
     dateRegistered: {
@@ -31,11 +27,10 @@ let UserSchema = new Schema({
 })
 
 UserSchema.method({
-    authenticate: (password) => {
-        let inputPasswordHash = encryption.generatePasswordHash(password, this.password.salt, this.password.iterations).hash
-
-        return this.password.hash === inputPasswordHash
+    authenticate: function (password) {
+        return this.password.hash === encryption.generateHashedPassword(password, this.password.salt)
     }
 })
+
 
 let User = mongoose.model('User', UserSchema)

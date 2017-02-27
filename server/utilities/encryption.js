@@ -1,12 +1,13 @@
-const crypto = require('crypto')
-
+const bcrypt = require('bcrypt')
 
 module.exports = {
-    generateHashedPassword: function (password, salt, iterations = 10000, callback) {
-        crypto.pbkdf2(password, salt, iterations, 512, 'sha512', callback)        
+    generateHashedPassword: function (password, salt) {
+        let hash = bcrypt.hashSync(password, salt)
+        
+        return hash
     },
     generateSalt: function () {
-        let salt = crypto.randomBytes(128).toString('base64')
+        let salt = bcrypt.genSaltSync()
 
         return salt
     }
