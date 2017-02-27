@@ -1,6 +1,9 @@
 var app = angular.module('meanStoreManagementSystem', ['ngResource','ngRoute'])
 
-app.config(['$routeProvider', function ($routeProvider) {
+app.config(['$routeProvider', '$locationProvider', function ($routeProvider, $locationProvider) {
+    
+    $locationProvider.html5Mode(true)
+    
     $routeProvider
         .when('/', {
             templateUrl: 'views/index.html',
