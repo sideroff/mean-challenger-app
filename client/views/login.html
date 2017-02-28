@@ -1,0 +1,18 @@
+<div class="container-fluid col-lg-4 col-md-6 col-sm-8 col-xs-10 col-centered">
+    <h3>Login</h3>
+    <form class="form-horizontal" ng-submit="loginUser()" name="loginForm" novalidate>
+        <div class="form-group">
+            <input class="form-control" ng-model="userWannaBe.username" ng-required="true" type="text" name="username" placeholder="Enter username">
+            <div ng-show="loginForm.username.$dirty && loginForm.username.$invalid">
+                <span>Enter a valid username</span>
+            </div>
+        </div>
+        <div class="form-group">
+            <input class="form-control" ng-model="userWannaBe.password" ng-required="true" type="password" name="password" placeholder="Enter password">
+            <div ng-show="loginForm.password.$dirty && loginForm.password.$invalid">
+                <span>Enter a valid password</span>
+            </div>
+        </div>
+        <input ng-disabled="loginForm.$invalid" class="btn btn-default" type="submit" value="Login!">
+    </form>
+</div>

@@ -3,4 +3,5 @@ app.controller('homeController', function($scope, $resource) {
         { name: "Meeting 1" },
         { name: "Another 2"}
     ]
+    
 })

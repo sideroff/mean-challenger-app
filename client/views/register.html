@@ -1,6 +1,25 @@
-<form name="registerForm" novalidate>
-    <input type="text" name="username" value="" placeholder="Enter username">
-    <input type="password" name="password" value="" placeholder="Enter password">
-    <input type="password" name="confirmPassowrd" value="" placeholder="Enter password again">
-    <input type="submit" value="Register!">
-</form>
+<div class="container-fluid col-lg-4 col-md-6 col-sm-8 col-xs-10 col-centered">
+    <h3>Register</h3>
+    <form class="form-horizontal" ng-submit="createUser()" name="registerForm" novalidate>
+        <div class="form-group">
+            <input class="form-control" ng-model="newUser.username" ng-required="true" type="text" name="username" placeholder="Enter username">
+            <div ng-show="registerForm.username.$dirty && registerForm.username.$invalid">
+                <span>Enter a valid username</span>
+            </div>
+        </div>
+        <div class="form-group">
+            <input class="form-control" ng-model="newUser.password" ng-required="true" type="password" name="password" placeholder="Enter password">
+            <div ng-show="registerForm.password.$dirty && registerForm.password.$invalid">
+                <span>Enter a valid password</span>
+            </div>
+        </div>
+        <div class="form-group">
+            <input class="form-control" ng-model="newUser.confirmPassword" ng-required="true" type="password" name="confirmPassowrd"
+                placeholder="Enter password again">
+                <div ng-show="newUser.password != newUser.confirmPassword">
+                    <span>Passwords do not match</span>
+                </div>
+        </div>
+        <input ng-disabled="registerForm.$invalid" class="btn btn-default" type="submit" value="Register!">
+    </form>
+</div>

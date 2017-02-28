@@ -1,0 +1,12 @@
+.ng-touched.ng-invalid {
+    border: solid orangered 2px;
+}
+
+.ng-touched.ng-valid {
+    border: solid limegreen 2px;
+}
+
+.col-centered{
+    float: none;
+    margin: 0 auto;
+}
