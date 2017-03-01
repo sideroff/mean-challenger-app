@@ -1,4 +1,4 @@
-app.controller('usersController', function ($rootScope, $scope, $http, $location, $timeout, userService) {
+app.controller('usersController', function ($rootScope, $scope, $http, $location, $timeout, userService, popupService) {
 
     this.user = $rootScope.user
 
@@ -12,7 +12,7 @@ app.controller('usersController', function ($rootScope, $scope, $http, $location
         }).then(result => {
             if (result.status == 200) {
                 $location.path('/login')
-                // show success popup
+                popupService.addPopup(result.data)
             }
         })
     }
@@ -25,6 +25,11 @@ app.controller('usersController', function ($rootScope, $scope, $http, $location
             url: '/login',
             data: userData
         }).then(result => {
+            popupService.addPopup({
+                type: result.data.type,
+                text: result.data.text
+            })
+
             if (result.status == 200) {
                 let user = {
                     username: result.data.username,
@@ -34,18 +39,16 @@ app.controller('usersController', function ($rootScope, $scope, $http, $location
                 userService.checkIfLoggedInAndAssignScopeVariable()
 
                 $location.path('/')
-                return
             }
-            let obj = JSON.parse(result.data)
-            console.log(obj.error)
         })
     }
 
     $scope.logout = function () {
         sessionStorage.clear()
         userService.checkIfLoggedInAndAssignScopeVariable()
-        
-        console.log('logged out ', this.user)
+
+        popupService.addPopup({ type: 'info', text: 'You have logged out!' })
+
         $location.path('/')
     }
 })

@@ -18,15 +18,15 @@ module.exports = {
 
         User.create(newUser, function (err, result) {
             let statusCode = 200
-            let returnJson = { success: 'You have registered successfully!' }
+            let returnJson = { type:'success', text: 'You have registered successfully!' }
             if (err) {
                 if (err.name == 'MongoError' && err.code == 11000) {
                     statusCode = 409 // conflict
-                    returnJson = { error: 'A user with this username already exists' }
+                    returnJson = { type:'error', text: 'A user with this username already exists' }
                 }
                 else {
                     statusCode = 500 // internal server error
-                    returnJson = { error: err }
+                    returnJson = { type:'error', text: err }
                 }
             }
             res.setHeader('Content-Type', 'application/json')
@@ -50,7 +50,7 @@ module.exports = {
 
                 res.setHeader('Content-Type', 'application/json')
                 res.status(200)
-                res.send(JSON.stringify({ success: 'You have successfully logged in!', jwt: newToken, username: user.username }))
+                res.send(JSON.stringify({ type:'success', text: 'You have successfully logged in!', jwt: newToken, username: user.username }))
 
             })
 
@@ -60,5 +60,5 @@ module.exports = {
 function handleInvalidCredentials(req, res) {
     res.setHeader('Content-Type', 'application/json')
     res.status(401)
-    res.send(JSON.stringify({ error: 'Username or password do not match!' }));
+    res.send(JSON.stringify({ type:'error', text: 'Username or password do not match!' }));
 }
