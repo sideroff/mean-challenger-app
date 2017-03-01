@@ -2,9 +2,9 @@
 
 A MEAN SPA where you register, create challenges for people and complete theirs.
 
-## Installation
+## Try it out!
 
-TODO: Describe the installation process
+The app is hosted at: http://meanchallenger.herokuapp.com
 
 ## Prerequisites
 
