@@ -14,6 +14,6 @@ module.exports = {
     production: {
         port: process.env.PORT,
         dbConnectionString: 'mongodb://' + dbUsername + ':' + dbPassword + '@ds019143.mlab.com:19143/challenger',
-        rootPath: rootPath        
+        rootPath: rootPath         
     }
 }
