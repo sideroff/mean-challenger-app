@@ -2,8 +2,6 @@ app.controller('popupsController', function($rootScope, $scope, $resource, popup
     this.popups = $rootScope.popups
 
     this.removePopup = function (index) {
-        console.log(index)
         popupService.removePopup(index)
-        console.log(this.popups)
     }
 })
