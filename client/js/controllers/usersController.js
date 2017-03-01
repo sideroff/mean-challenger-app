@@ -25,10 +25,13 @@ app.controller('usersController', function ($rootScope, $scope, $http, $location
             url: '/login',
             data: userData
         }).then(result => {
-            popupService.addPopup({
+
+            let popup = {
                 type: result.data.type,
                 text: result.data.text
-            })
+            }
+            popupService.addPopup(popup)
+            console.log('here, ', popup)
 
             if (result.status == 200) {
                 let user = {
