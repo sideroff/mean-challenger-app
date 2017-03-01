@@ -9,6 +9,6 @@ require('./server/config/database')(config)
 require('./server/config/express')(app, config)
 require('./server/config/routes')(app, config)
 
-app.listen(3000, function () {
-    console.log('Server listening on 3000')
+app.listen(config.port, function () {
+    console.log('Server listening on ', config.port)
 })
