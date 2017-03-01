@@ -35,6 +35,7 @@ module.exports = {
         })
     },
     login: (req, res) => {
+        console.log('got login')
         User.findOne({ username: req.body.username })
             .then(user => {
                 if (!user || !user.authenticate(req.body.password)) {

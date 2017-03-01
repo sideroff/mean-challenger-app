@@ -9,9 +9,9 @@ app.config(['$routeProvider', '$locationProvider', function ($routeProvider, $lo
             templateUrl: 'views/index.html',
             controller: 'homeController'
         })
-        .when('/hello', {
-            templateUrl: 'views/someOther.html',
-            controller: 'homeController'
+        .when('/challenges/create', {
+            templateUrl: 'views/challengeCreationForm.html',
+            controller: 'challengesController'
         })
         .when('/register', {
             templateUrl: 'views/register.html',

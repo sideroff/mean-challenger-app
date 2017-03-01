@@ -7,7 +7,7 @@ app.controller('usersController', function ($rootScope, $scope, $http, $location
 
         $http({
             method: 'POST',
-            url: '/register',
+            url: '/api/register',
             data: newUserData
         }).then(result => {
             if (result.status == 200) {
@@ -22,7 +22,7 @@ app.controller('usersController', function ($rootScope, $scope, $http, $location
 
         $http({
             method: 'POST',
-            url: '/login',
+            url: '/api/login',
             data: userData
         }).then(result => {
 

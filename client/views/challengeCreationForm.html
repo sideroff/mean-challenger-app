@@ -1,0 +1,16 @@
+<div class="container-fluid col-lg-4 col-md-6 col-sm-8 col-xs-10 col-centered">
+    <h3>Create a new challenge</h3>
+    <form class="form-horizontal" ng-submit="create()" name="challengeCreationForm" novalidate>
+        <div class="form-group">
+            <input class="form-control" ng-model="challenge.name" ng-required="true" type="text" name="name" placeholder="The full name of your challenge">
+        </div>
+        <div class="form-group">
+            <input class="form-control" ng-model="challenge.urlName" ng-required="true" type="text" name="urlName" placeholder="The url name of your challenge">
+            <div ng-show="urlName.$touched && urlName.$dirty">The url to your challenge is going to look like: meanchallenger.herokuapp.com/challenges/{{urlName}}</div>
+        </div>
+        <div class="form-group">
+            <textarea class="form-control" ng-model="challenge.description" ng-required="true" type "text" cols=""></textarea>
+        </div>
+        <input class="btn btn-default" type="submit" value="Create!">
+    </form>
+</div>
