@@ -1,7 +1,8 @@
 <div class="container-fluid col-lg-4 col-md-6 col-sm-8 col-xs-10 col-centered">
     <h3>Login</h3>
-    <form class="form-horizontal" ng-submit="loginUser()" name="loginForm" novalidate>
+    <form class="form-horizontal" ng-submit="login()" name="loginForm" novalidate>
         <div class="form-group">
+            username: {{userWannaBe.username}}
             <input class="form-control" ng-model="userWannaBe.username" ng-required="true" type="text" name="username" placeholder="Enter username">
             <div ng-show="loginForm.username.$dirty && loginForm.username.$invalid">
                 <span>Enter a valid username</span>

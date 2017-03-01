@@ -1,6 +1,6 @@
 <div class="container-fluid col-lg-4 col-md-6 col-sm-8 col-xs-10 col-centered">
     <h3>Register</h3>
-    <form class="form-horizontal" ng-submit="createUser()" name="registerForm" novalidate>
+    <form class="form-horizontal" ng-submit="register()" name="registerForm" novalidate>
         <div class="form-group">
             <input class="form-control" ng-model="newUser.username" ng-required="true" type="text" name="username" placeholder="Enter username">
             <div ng-show="registerForm.username.$dirty && registerForm.username.$invalid">
