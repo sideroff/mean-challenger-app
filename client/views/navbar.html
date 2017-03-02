@@ -28,10 +28,9 @@
         </div>
     </div>
 </nav>
-<div ng-controller="popupsController as pc" class="container container-fluid">
-    <div ng-repeat="popup in pc.popups">
-        <div ng-click="pc.removePopup($index)" class="alert alert-{{popup.type}} alert-dismissable" title="Click to hide" role="button">
-            {{$index}}, {{popup.text}}
-        </div>
+<div ng-controller="popupsController as pc" class="container container-fluid" id="popupContainer">
+    <div ng-repeat="popup in pc.popups" ng-click="pc.removePopup($index)" class="alert alert-{{popup.type}} alert-dismissable"
+        title="Click to hide" role="button">
+        {{popup.text}}
     </div>
 </div>

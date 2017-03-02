@@ -1,4 +1,4 @@
-var app = angular.module('meanStoreManagementSystem', ['ngResource','ngRoute'])
+var app = angular.module('meanStoreManagementSystem', ['ngResource','ngRoute','ngAnimate'])
 
 app.config(['$routeProvider', '$locationProvider', function ($routeProvider, $locationProvider) {
     
