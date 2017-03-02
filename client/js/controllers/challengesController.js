@@ -21,7 +21,7 @@ app.controller('challengesController', function ($rootScope, $scope, $http, $loc
                 }
             },
             error => {
-                console.log(error)
+                popupService.addPopup(err.data)
             })
     }
 

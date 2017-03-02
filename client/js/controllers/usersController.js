@@ -25,6 +25,12 @@ app.controller('usersController', function ($rootScope, $scope, $http, $location
     $scope.login = function () {
         let userData = $scope.userWannaBe
 
+        if(!userData || !userData.username || !userData.password){
+            popupService.addPopup({type: 'info', text: 'You must supply username and password first.'})
+            return
+        }
+
+
         $http({
             method: 'POST',
             url: '/api/login',
@@ -60,6 +66,7 @@ app.controller('usersController', function ($rootScope, $scope, $http, $location
 
     $scope.checkUsername = function () {
         if (!$scope.newUser || !$scope.newUser.username || $scope.newUser.username.length == 0) {
+            popupService.addPopup({type: 'error', text: 'You need to supply a username first!'})
             return
         }
         $http({

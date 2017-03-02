@@ -2,11 +2,15 @@
     <h3>Login</h3>
     <form class="form-horizontal" ng-submit="login()" name="loginForm" novalidate>
         <div class="form-group">
-            <input class="form-control" ng-model="userWannaBe.username" ng-required="true" type="text" name="username" placeholder="Enter username">
+            <div class="input-block-level">
+                <input class="form-control" ng-model="userWannaBe.username" ng-required="true" type="text" name="username" placeholder="Enter username">
+            </div>
         </div>
         <div class="form-group">
-            <input class="form-control" ng-model="userWannaBe.password" ng-required="true" type="password" name="password" placeholder="Enter password">
+            <div class="input-block-level">
+                <input class="form-control" ng-model="userWannaBe.password" ng-required="true" type="password" name="password" placeholder="Enter password">
+            </div>
         </div>
-        <input ng-disabled="loginForm.$invalid" class="btn btn-default" type="submit" value="Login!">
+        <input class="btn btn-default" type="submit" value="Login!">
     </form>
 </div>

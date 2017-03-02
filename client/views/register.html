@@ -2,20 +2,25 @@
     <h3>Register</h3>
     <form class="form-horizontal" ng-submit="register()" name="registerForm" novalidate>
         <div class="form-group">
-            <input class="form-control" ng-blur="checkUsername()" ng-model="newUser.username" ng-required="true" type="text" name="username"
-                placeholder="Enter username">
-            <div ng-show="true">
-                <span>Enter a valid username</span>
+            <div class="input-group">
+                <input type="text" class="form-control" ng-model="newUser.username" ng-required="true" type="text" name="username" placeholder="Enter username">
+                <span class="input-group-btn">
+                <button class="btn btn-secondary" ng-click="checkUsername()" type="button">Check if it's free</button>
+            </span>
             </div>
         </div>
         <div class="form-group">
-            <input class="form-control" ng-model="newUser.password" ng-required="true" type="password" name="password" placeholder="Enter password">
+            <div class="input-block-level">
+                <input class="form-control" ng-model="newUser.password" ng-required="true" type="password" name="password" placeholder="Enter password">
+            </div>
         </div>
         <div class="form-group">
-            <input class="form-control" ng-model="newUser.confirmPassword" ng-required="true" type="password" name="confirmPassowrd"
-                placeholder="Enter password again">
-            <div ng-show="newUser.password != newUser.confirmPassword">
-                <span>Passwords do not match</span>
+            <div class="input-block-level">
+                <input class="form-control" ng-model="newUser.confirmPassword" ng-required="true" type="password" name="confirmPassowrd"
+                    placeholder="Enter password again">
+                <div ng-show="newUser.password != newUser.confirmPassword">
+                    <span>Passwords do not match</span>
+                </div>
             </div>
         </div>
         <input ng-disabled="registerForm.$invalid" class="btn btn-default" type="submit" value="Register!">
