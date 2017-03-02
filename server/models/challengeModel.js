@@ -62,3 +62,5 @@ challengeSchema.method({
         this.completedBy.push(userId)
     }
 })
+
+mongoose.model('Challenge', challengeSchema)

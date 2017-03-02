@@ -20,9 +20,13 @@ module.exports = function (req, res, next) {
         handleUnauthorizedUsers(req, res, next)
         return
     }
-    
-    req.user = user
+    req.user = {
+        username: user.username,
+        _id: user._id
+    }
 
+    next()
+    
     function handleUnauthorizedUsers(req, res, next) {
         res.send(JSON.stringify({error: 'unautherized'}))
         // req.redirect('/login')

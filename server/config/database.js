@@ -20,4 +20,5 @@ module.exports = (config) => {
     })
     
     require('../models/userModel')
+    require('../models/challengeModel')
 }

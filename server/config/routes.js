@@ -1,5 +1,6 @@
 const controllers = require('../controllers')
 const authenticate = require('../middlewares/authenticate')
+const checkChallengeIntegrity = require('../middlewares/checkChallengeIntegrity')
 
 module.exports = (app, config) => {
     // take only api calls
@@ -8,7 +9,7 @@ module.exports = (app, config) => {
 
     app.post('/api/login', controllers.usersController.login)
     app.post('/api/register', controllers.usersController.register)
-    app.post('/api/challenges', authenticate, controllers.challengeController.create)
+    app.post('/api/challenges', authenticate, checkChallengeIntegrity, controllers.challengeController.create)
     app.post('/api/challenges/participate', authenticate, controllers.challengeController.participate)
     app.post('/api/challenges/un-participate', authenticate, controllers.challengeController.unParticipate)
     app.post('/api/challenges/complete', authenticate, controllers.challengeController.complete)

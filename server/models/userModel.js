@@ -33,4 +33,4 @@ UserSchema.method({
 })
 
 
-let User = mongoose.model('User', UserSchema)
+mongoose.model('User', UserSchema)
