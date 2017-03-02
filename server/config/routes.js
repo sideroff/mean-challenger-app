@@ -6,6 +6,7 @@ module.exports = (app, config) => {
     // take only api calls
     app.get('/api/challenges/:pageNumber', controllers.challengeController.index)
     app.get('/api/challenges/:urlName', controllers.challengeController.get)
+    app.get('/api/users/check/:username', controllers.usersController.check)
 
     app.post('/api/login', controllers.usersController.login)
     app.post('/api/register', controllers.usersController.register)

@@ -1,9 +1,26 @@
 const jwt = require('jsonwebtoken')
 const encryption = require('../utilities/encryption')
 const jwtSecret = require('../utilities/jwtSecret').getSecret()
+const respond = require('../utilities/respond')
 let User = require('mongoose').model('User')
 
 module.exports = {
+    check: (req, res) => {
+        let username = req.params.username
+        User.findOne({ username: username }).then(
+            result => {
+                if (result) {
+                    respond(res, 409, {type: 'error', text: 'A user with this username already exists!'})
+                }
+                else {
+                    respond(res, 200, {type: 'info', text: 'This username is free.'})
+                }
+            },
+            err => {
+                respond(res, 500, { type: 'error', text: 'Something went wrong while processing your requrest!' })
+            }
+        )
+    },
     register: (req, res) => {
         let salt = encryption.generateSalt()
         let passwordHash = encryption.generateHashedPassword(req.body.password, salt)
@@ -16,30 +33,26 @@ module.exports = {
             }
         }
 
-        User.create(newUser, function (err, result) {
-            let statusCode = 200
-            let returnJson = { type:'success', text: 'You have registered successfully!' }
-            if (err) {
+        User.create(newUser).then(
+            user => {
+                respond(res, 200, { type: 'success', text: 'You have registered successfully!' })
+            },
+            err => {
                 if (err.name == 'MongoError' && err.code == 11000) {
-                    statusCode = 409 // conflict
-                    returnJson = { type:'error', text: 'A user with this username already exists' }
+                    respond(res, 409, { type: 'error', text: 'A user with this username already exists' })
                 }
                 else {
-                    statusCode = 500 // internal server error
-                    returnJson = { type:'error', text: err }
+                    respond(res, 500, { type: 'error', text: 'Something went wrong while processing your requrest!' })
                 }
             }
-            res.setHeader('Content-Type', 'application/json')
-            res.status(statusCode)
-            res.json(JSON.stringify(returnJson))
-        })
+        )
     },
+
     login: (req, res) => {
-        console.log('got login')
-        User.findOne({ username: req.body.username })
-            .then(user => {
+        User.findOne({ username: req.body.username }).then(
+            user => {
                 if (!user || !user.authenticate(req.body.password)) {
-                    handleInvalidCredentials(req, res)
+                    respond(res, 401, { type: 'error', text: 'Username or password do not match!' })
                     return
                 }
 
@@ -49,17 +62,10 @@ module.exports = {
                 }
                 let newToken = jwt.sign(payload, jwtSecret)
 
-                res.setHeader('Content-Type', 'application/json')
-                res.status(200)
-                res.send(JSON.stringify({ type:'success', text: 'You have successfully logged in!', jwt: newToken, username: user.username }))
-
+                respond(res, 200, { type: 'success', text: 'You have successfully logged in!', jwt: newToken, username: user.username })
+            },
+            err => {
+                respond(res, 500, { type: 'error', text: 'Something went wrong while processing your requrest.' })
             })
-
     }
-}
-
-function handleInvalidCredentials(req, res) {
-    res.setHeader('Content-Type', 'application/json')
-    res.status(401)
-    res.send(JSON.stringify({ type:'error', text: 'Username or password do not match!' }));
 }

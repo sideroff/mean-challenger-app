@@ -9,12 +9,17 @@ app.controller('usersController', function ($rootScope, $scope, $http, $location
             method: 'POST',
             url: '/api/register',
             data: newUserData
-        }).then(result => {
-            if (result.status == 200) {
-                $location.path('/login')
-                popupService.addPopup(result.data)
-            }
-        })
+        }).then(
+            result => {
+                if (result.status == 200) {
+                    $location.path('/login')
+                    popupService.addPopup(result.data)
+                }
+            },
+            err => {
+                console.log('err')
+                popupService.addPopup({ type: 'error', text: 'Something went wrong while processing your request.' })
+            })
     }
 
     $scope.login = function () {
@@ -24,26 +29,24 @@ app.controller('usersController', function ($rootScope, $scope, $http, $location
             method: 'POST',
             url: '/api/login',
             data: userData
-        }).then(result => {
+        }).then(
+            result => {
+                popupService.addPopup(result.data)
 
-            let popup = {
-                type: result.data.type,
-                text: result.data.text
-            }
-            popupService.addPopup(popup)
-            console.log('here, ', popup)
+                if (result.status == 200) {
+                    let user = {
+                        username: result.data.username,
+                        jwt: result.data.jwt
+                    }
+                    sessionStorage.setItem('user', JSON.stringify(user))
+                    userService.checkIfLoggedInAndAssignScopeVariable()
 
-            if (result.status == 200) {
-                let user = {
-                    username: result.data.username,
-                    jwt: result.data.jwt
+                    $location.path('/')
                 }
-                sessionStorage.setItem('user', JSON.stringify(user))
-                userService.checkIfLoggedInAndAssignScopeVariable()
-
-                $location.path('/')
-            }
-        })
+            },
+            err => {
+                popupService.addPopup(err.data)
+            })
     }
 
     $scope.logout = function () {
@@ -53,5 +56,22 @@ app.controller('usersController', function ($rootScope, $scope, $http, $location
         popupService.addPopup({ type: 'info', text: 'You have logged out!' })
 
         $location.path('/')
+    }
+
+    $scope.checkUsername = function () {
+        if (!$scope.newUser || !$scope.newUser.username || $scope.newUser.username.length == 0) {
+            return
+        }
+        $http({
+            method: 'GET',
+            url: '/api/users/check/' + $scope.newUser.username,
+        }).then(
+            result => {
+                popupService.addPopup(result.data)
+            },
+            err => {
+                popupService.addPopup(err.data)
+            }
+            )
     }
 })
