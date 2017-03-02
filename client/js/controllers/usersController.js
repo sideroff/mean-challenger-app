@@ -5,6 +5,12 @@ app.controller('usersController', function ($rootScope, $scope, $http, $location
     $scope.register = function () {
         let newUserData = $scope.newUser
 
+        if(!newUserData || !newUserData.username || !newUserData.password || !newUserData.confirmPassword){
+            popupService.addPopup({type: 'info', text: 'Username, password and confirm password fields are required!'})
+            return
+        }
+
+
         $http({
             method: 'POST',
             url: '/api/register',

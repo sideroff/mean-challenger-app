@@ -1,5 +1,12 @@
+
+
 app.controller('challengesController', function ($rootScope, $scope, $http, $location, userService, popupService) {
     $scope.create = function () {
+        if(!$scope.challengeWannaBe || !$scope.challengeWannaBe.name || !$scope.challengeWannaBe.urlName || !$scope.challengeWannaBe.description){
+            popupService.addPopup({type: 'error', text: 'Name, urlName and description fields are required!'})
+            return
+        }
+        
         let newChallenge = {
             name: $scope.challengeWannaBe.name,
             urlName: $scope.challengeWannaBe.urlName,
