@@ -1,4 +1,4 @@
-app.controller('challengesController', function ($rootScope, $scope, $http, userService) {
+app.controller('challengesController', function ($rootScope, $scope, $http, $location, userService, popupService) {
     $scope.create = function () {
         let newChallenge = {
             name: $scope.challengeWannaBe.name,
@@ -9,15 +9,20 @@ app.controller('challengesController', function ($rootScope, $scope, $http, user
             method: 'POST',
             url: '/api/challenges',
             headers: {
-                'Authorization' : 'Bearer ' + $rootScope.user.jwt
+                'Authorization': 'Bearer ' + $rootScope.user.jwt
             },
             data: newChallenge
-        }).then(result => {
-            console.log(result)
-        },
-        error => {
-            console.log(error)
-        })
+        }).then(
+            result => {
+                popupService.addPopup({ type: result.data.type, text: result.data.text })
+
+                if (result.status == 200) {
+                    $location.path('/challenges/' + result.data.urlName)
+                }
+            },
+            error => {
+                console.log(error)
+            })
     }
 
     $scope.participate = function () {

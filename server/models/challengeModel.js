@@ -31,7 +31,7 @@ let challengeSchema = new Schema({
         user: {
             type: Schema.Types.ObjectId,
             ref: 'User',
-            required: validationMsg
+            default: []
         },
         active: {
             type: Boolean,
@@ -41,7 +41,7 @@ let challengeSchema = new Schema({
     completedBy: [{
         type: Schema.Types.ObjectId,
         ref: 'User',
-        required: validationMsg
+        default: []
     }]
 })
 
