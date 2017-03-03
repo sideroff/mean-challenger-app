@@ -8,9 +8,10 @@
         </div>
         <div class="form-group">
             <div class="input-block-level">
-                <input class="form-control" ng-model="challengeWannaBe.urlName" ng-required="true" type="text" name="urlName" placeholder="Enter a url name, example: my-new-challenge">
-                <span>The link to your challenge will be:<br />
-            meanchallenger.herokuapp.com/challenges/{{challengeWannaBe.urlName || '...'}}</span>
+                <div class="input-group">
+                    <span class="input-group-addon" id="basic-addon3">.../challenges/{{challengeWannaBe.urlName}}</span>
+                    <input class="form-control" ng-model="challengeWannaBe.urlName" ng-required="true" type="text" name="urlName" placeholder="Enter a url name, example: my-new-challenge">
+                </div>
             </div>
         </div>
         <div class="form-group">
