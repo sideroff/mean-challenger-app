@@ -1,4 +1,5 @@
 app.service('popupService', ['$rootScope', function ($rootScope) {
+    
     $rootScope.popups = []
 
     this.addPopup = function (popupData) {
