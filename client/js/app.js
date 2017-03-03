@@ -30,7 +30,7 @@ paths = {
     }
 }
 
-app.config(['$routeProvider', '$locationProvider', function ($routeProvider, $locationProvider) {
+app.config(['$routeProvider', '$locationProvider', ($routeProvider, $locationProvider) => {
 
 
     $locationProvider.html5Mode(true)
@@ -40,23 +40,20 @@ app.config(['$routeProvider', '$locationProvider', function ($routeProvider, $lo
     }
     $routeProvider.otherwise({ redirectTo: '/not-found' })
 
-}]).
-    run(function ($rootScope, $location, userService, popupService) {
-        $rootScope
-            .$on('$routeChangeStart',
-            function (event, toState, toParams, fromState, fromParams) {
-                let desiredPath = paths[toState.$$route.originalPath]
-                if (desiredPath) {
-                    if (desiredPath.requiredLogin && !$rootScope.user) {
-                        popupService.addPopup({ type: 'error', text: 'You need to be logged in first!' })
-                        $location.path('/login')
-                        event.preventDefault()
-                    }
-                    else if (desiredPath.requiredLogout && $rootScope.user) {
-                        popupService.addPopup({ type: 'error', text: 'You need to be logged out first!' })
-                        $location.path('/')
-                        event.preventDefault()
-                    }
+}]).run(($rootScope, $location, userService, popupService) => {
+        $rootScope.$on('$routeChangeStart', (event, toState, toParams, fromState, fromParams) => {
+            let desiredPath = paths[toState.$$route.originalPath]
+            if (desiredPath) {
+                if (desiredPath.requiredLogin && !$rootScope.user) {
+                    popupService.addPopup({ type: 'error', text: 'You need to be logged in first!' })
+                    $location.path('/login')
+                    event.preventDefault()
                 }
-            });
+                else if (desiredPath.requiredLogout && $rootScope.user) {
+                    popupService.addPopup({ type: 'error', text: 'You need to be logged out first!' })
+                    $location.path('/')
+                    event.preventDefault()
+                }
+            }
+        })
     })
