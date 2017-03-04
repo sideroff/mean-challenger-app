@@ -3,7 +3,21 @@ let Challenge = require('mongoose').model('Challenge')
 
 module.exports = {
     index: (req, res) => {
+        let page = Number(req.query.page)
+        let amount = Number(req.query.amount)
 
+        Challenge.aggregate([
+            {$sort: {'dateCreated': -1}},
+            {$skip: page > 0 ? ((page - 1) * amount) : 0},
+            {$limit: amount}
+        ]).then(
+            result => {
+                respond(res, 200, result)
+            },
+            err => {
+                respond(res, 500, err)
+            }
+        )
     },
     get: (req, res) => {
 
@@ -15,15 +29,14 @@ module.exports = {
 
         Challenge.create(newChallenge).then(
             result => {
-                
-                respond(res, 200, {type: 'success', text:'Challenge created successfully!', urlName: result.urlName})
+                respond(res, 200, { type: 'success', text: 'Challenge created successfully!', urlName: result.urlName })
             },
             err => {
-                if (err.name =='MongoError' && err.code == 11000) {
-                    respond(res, 400, {type: 'error', text:'A challenge with such url name already exists!'})
+                if (err.name == 'MongoError' && err.code == 11000) {
+                    respond(res, 400, { type: 'error', text: 'A challenge with such url name already exists!' })
                     return
                 }
-                respond(res, 500, {type: 'error', text: 'Something went wrong while processing your request.'})
+                respond(res, 500, { type: 'error', text: 'Something went wrong while processing your request.' })
             }
         )
 

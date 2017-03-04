@@ -4,7 +4,7 @@ const checkChallengeIntegrity = require('../middlewares/checkChallengeIntegrity'
 
 module.exports = (app, config) => {
     // take only api calls
-    app.get('/api/challenges/:pageNumber', controllers.challengeController.index)
+    app.get('/api/challenges', controllers.challengeController.index)
     app.get('/api/challenges/:urlName', controllers.challengeController.get)
     app.get('/api/users/check/:username', controllers.usersController.check)
 

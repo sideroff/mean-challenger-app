@@ -1,1 +1,8 @@
 <h3>list of all challenges</h3>
+
+
+<div ng-controller='challengesController'>
+  <div infinite-scroll='nextPage()' infinite-scroll-distance='2'>
+    <div ng-repeat='challenge in challenges' >{{challenge.dateCreated | date: 'd/M/yy h:mm:ss a'}}</div>
+  </div>
+</div>

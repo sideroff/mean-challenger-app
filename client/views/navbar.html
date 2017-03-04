@@ -12,16 +12,15 @@
             <ul class="nav navbar-nav">
                 <li><a href="/">Home</a></li>
                 <li><a href="/challenges">Challenges</a></li>
-                <li><a href="/challenges/create">Create challenge</a></li>
-                <li><a href="#">Page 3</a></li>
+                <li ng-if="user"><a href="/challenges/create">Create challenge</a></li>
             </ul>
 
-            <ul ng-show="user" class="nav navbar-nav navbar-right">
+            <ul ng-if="user" class="nav navbar-nav navbar-right">
                 <li><a href="{{'/users/' + user.username}}"><span class="glyphicon glyphicon-user"></span> {{user.username}}</a></li>
                 <li><a href="/" ng-click="logout()"><span class="glyphicon glyphicon-log-out"></span> Logout</a></li>
             </ul>
 
-            <ul ng-show="!user" class="nav navbar-nav navbar-right">
+            <ul ng-if="!user" class="nav navbar-nav navbar-right">
                 <li><a href="/register"><span class="glyphicon glyphicon-plus-sign"></span> Sign Up</a></li>
                 <li><a href="/login"><span class="glyphicon glyphicon-log-in"></span> Login</a></li>
             </ul>

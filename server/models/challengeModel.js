@@ -20,7 +20,8 @@ let challengeSchema = new Schema({
     },
     dateCreated: {
         type: Date,
-        default: Date.now()
+        default: Date.now,
+        index: true
     },
     author: {
         type: Schema.Types.ObjectId,

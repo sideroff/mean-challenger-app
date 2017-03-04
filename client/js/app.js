@@ -1,48 +1,36 @@
-var app = angular.module('meanStoreManagementSystem', ['ngResource', 'ngRoute', 'ngAnimate'])
+var app = angular.module('meanStoreManagementSystem', ['ngResource', 'ngRoute', 'ngAnimate','infinite-scroll'])
 
 let routes = [
     {
         route: '/',
-        href: '/',
-        linkText: 'Home',
         templateUrl: 'views/index.html',
         controller: 'homeController'
     },
     {
         route: '/challenges',
-        href: '/challenges',
-        linkText: 'Challenges',
         templateUrl: 'views/challenges.html',
         controller: 'challengesController'
     },
     {
         route: '/challenges/create',
-        href: '/challenges/create',
-        linkText: 'Create challenge',
         templateUrl: 'views/challengeCreationForm.html',
         controller: 'challengesController',
         requiredLogin: true
     },
     {
         route: '/register',
-        href: '/register',
-        linkText: 'Register',
         templateUrl: 'views/register.html',
         controller: 'usersController',
         requredLogout: true
     },
     {
         route: '/login',
-        href: '/login',
-        linkText: 'Login',
         templateUrl: 'views/login.html',
         controller: 'usersController',
         requiredLogout: true
     },
     {
         route: '/users/username',
-        href: '"/users/" + user.username',
-        linkText: 'user.username',
         templateUrl: 'views/profile.html',
         controller: 'usersController',
         requiredLogout: true
