@@ -15,7 +15,7 @@ app.controller('challengesController', function ($rootScope, $scope, $routeParam
                 $scope.currentChallenge = result.data
             },
             err => {
-                console.log(err)
+                $scope.err = err.data.text
             }
         )
     }

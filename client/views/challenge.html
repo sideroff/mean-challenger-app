@@ -1,3 +1,16 @@
-<div ng-controller="challengesController">
-    <div>{{currentChallenge}}</div>    
+<div class="container-fluid col-lg-10 col-md-10 col-sm-10 col-xs-10 col-centered">
+    <div ng-if="currentChallenge" class="panel panel-default">
+        <div class="panel-heading">
+            <h4>{{currentChallenge.name}}</h4>
+        </div>
+        <div class="panel-body">{{currentChallenge.description}}</div>
+        <div class="panel-body">
+            <span>by: <a href="/users/{{currentChallenge.author}}">{{currentChallenge.author[0]}}</a></span>
+            <span style="float:right;">{{currentChallenge.dateCreated | date: 'HH:mm, MMM d, y'}}</span>
+            <hr>
+        </div>
+        <div>{{currentChallenge.participations}}</div>
+        <div>{{currentChallenge.completedBy}}</div>
+    </div>
+    <span ng-if="err">{{err}}</span>
 </div>

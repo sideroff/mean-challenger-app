@@ -7,33 +7,44 @@ module.exports = {
         let amount = Number(req.query.amount)
 
         Challenge.aggregate([
-            {$sort: {'dateCreated': -1}},
-            {$skip: page > 0 ? ((page - 1) * amount) : 0},
-            {$limit: amount}
+            { $sort: { 'dateCreated': -1 } },
+            { $skip: page > 0 ? ((page - 1) * amount) : 0 },
+            { $limit: amount }
         ]).then(
             result => {
                 respond(res, 200, result)
             },
             err => {
                 respond(res, 500, err)
-            }
-        )
+            })
     },
     get: (req, res) => {
         let urlName = req.params.urlName
 
-        Challenge.findOne({urlName: urlName}).then(
+        Challenge.aggregate([
+            { $match: { 'urlName': urlName } },
+            {
+                $lookup: {
+                    from: "users",
+                    localField: "author",
+                    foreignField: "_id",
+                    as: "author"
+                }
+            },
+            {$project: {'name': 1, 'urlName': 1, 'description': 1,'dateCreated' : 1, 'author.username': 1, 'participations': 1, 'completedBy': 1}}
+        ]).then(
             result => {
-                if (!result){
-                    respond(res, 404, {type: 'error', text: 'No such challenge found :('})
+                if (!result || result.length == 0) {
+                    respond(res, 404, { type: 'error', text: 'No such challenge found :(' })
                     return
                 }
+                result = result[0]
+                result.author = result.author[0].username
                 respond(res, 200, result)
             },
             err => {
                 respond(res, 500, { type: 'error', text: 'Something went wrong while processing your request.' })
-            }
-        )
+            })
     },
     create: (req, res) => {
         // challenge validation is handled by a middleware
