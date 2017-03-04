@@ -1,8 +1,20 @@
-<h3>list of all challenges</h3>
 
-
-<div ng-controller='challengesController'>
+<div ng-controller='challengesController' class="container container-fluid">
   <div infinite-scroll='nextPage()' infinite-scroll-distance='2'>
-    <div ng-repeat='challenge in challenges' >{{challenge.dateCreated | date: 'd/M/yy h:mm:ss a'}}</div>
-  </div>
+    <ul angular-grid="challenges">
+      <div ng-repeat="challenge in challenges" class="panel panel-default">
+        <div class="panel-heading">
+            <h4>{{challenge.name}}</h4>
+        </div>
+        <div class="panel-body">{{challenge.description}}</div>
+        <div class="panel-body">
+            <span>by: <a href="/users/{{challenge.author}}">{{challenge.author[0]}}</a></span>
+            <span style="float:right;">{{challenge.dateCreated | date: 'HH:mm, MMM d, y'}}</span>
+            <hr>
+        </div>
+        <div>{{challenge.participations}}</div>
+        <div>{{challenge.completedBy}}</div>
+    </div>
+  </ul>
+</div>
 </div>
