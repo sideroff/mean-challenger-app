@@ -1,10 +1,27 @@
 
 
-app.controller('challengesController', function ($rootScope, $scope, $http, $location, userService, popupService) {
+app.controller('challengesController', function ($rootScope, $scope, $routeParams,$http, $location, userService, popupService) {
     $scope.challenges = []
     $scope.busy = false
     $scope.page = 1
     $scope.amount = 10
+    
+    if ($routeParams.urlName && !$scope.currentChallenge) {
+        $http({
+            method: 'GET',
+            url: '/api/challenges/' + $routeParams.urlName
+        }).then(
+            result => {
+                $scope.currentChallenge = result.data
+            },
+            err => {
+                console.log(err)
+            }
+        )
+    }
+
+
+
 
     $scope.nextPage = function () {
         if ($scope.busy) return
@@ -39,7 +56,7 @@ app.controller('challengesController', function ($rootScope, $scope, $http, $loc
         }
         $http({
             method: 'POST',
-            url: '/api/challenges',
+            url: '/api/create',
             headers: {
                 'Authorization': 'Bearer ' + $rootScope.user.jwt
             },
@@ -55,6 +72,11 @@ app.controller('challengesController', function ($rootScope, $scope, $http, $loc
             err => {
                 popupService.addPopup(err.data)
             })
+    }
+
+    $scope.get = function () {
+        console.log('getting')
+        return 'got'
     }
 
     $scope.participate = function () {

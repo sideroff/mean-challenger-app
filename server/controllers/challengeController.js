@@ -20,7 +20,20 @@ module.exports = {
         )
     },
     get: (req, res) => {
+        let urlName = req.params.urlName
 
+        Challenge.findOne({urlName: urlName}).then(
+            result => {
+                if (!result){
+                    respond(res, 404, {type: 'error', text: 'No such challenge found :('})
+                    return
+                }
+                respond(res, 200, result)
+            },
+            err => {
+                respond(res, 500, { type: 'error', text: 'Something went wrong while processing your request.' })
+            }
+        )
     },
     create: (req, res) => {
         // challenge validation is handled by a middleware

@@ -12,7 +12,7 @@ let routes = [
         controller: 'challengesController'
     },
     {
-        route: '/challenges/create',
+        route: '/create',
         templateUrl: 'views/challengeCreationForm.html',
         controller: 'challengesController',
         requiredLogin: true
@@ -30,10 +30,14 @@ let routes = [
         requiredLogout: true
     },
     {
-        route: '/users/username',
+        route: '/users/:username',
         templateUrl: 'views/profile.html',
-        controller: 'usersController',
-        requiredLogout: true
+        controller: 'usersController'
+    },
+    {
+        route: '/challenges/:urlName',
+        templateUrl: 'views/challenge.html',
+        controller: 'challengesController',
     }]
 
 app.config(['$routeProvider', '$locationProvider', ($routeProvider, $locationProvider) => {
