@@ -21,3 +21,7 @@ textarea { resize: vertical; }
 .alert.ng-leave.ng-leave-active {
   opacity:0;
 }
+
+div {
+  word-wrap: break-word;
+}

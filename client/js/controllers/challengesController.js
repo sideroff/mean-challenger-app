@@ -1,27 +1,33 @@
 
 
-app.controller('challengesController', function ($rootScope, $scope, $routeParams,$http, $location, userService, popupService) {
+app.controller('challengesController', function ($rootScope, $scope, $routeParams, $http, $location, userService, popupService) {
     $scope.challenges = []
     $scope.busy = false
     $scope.page = 1
     $scope.amount = 10
-    
+
     if ($routeParams.urlName && !$scope.currentChallenge) {
         $http({
             method: 'GET',
             url: '/api/challenges/' + $routeParams.urlName
-        }).then(
+        })
+            .then(
             result => {
                 $scope.currentChallenge = result.data
             },
             err => {
                 $scope.err = err.data.text
-            }
-        )
+            })
     }
 
 
-
+    $scope.mapToCorrectLength = function (string, margin = 200, limit = 700) {
+        if (string.length < limit + margin) {
+            return string
+        }
+        // number of chars depends on the length and is within the margin 
+        return string.substring(0, limit + margin * (1 - margin / string.length))
+    }
 
     $scope.nextPage = function () {
         if ($scope.busy) return

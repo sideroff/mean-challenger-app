@@ -3,7 +3,7 @@
         <div class="panel-heading">
             <h4>{{currentChallenge.name}}</h4>
         </div>
-        <div class="panel-body">{{currentChallenge.description}}</div>
+        <div class="panel-body"><p>{{currentChallenge.description}}</p></div>
         <div class="panel-body">
             <span>by: <a href="/users/{{currentChallenge.author}}">{{currentChallenge.author[0]}}</a></span>
             <span style="float:right;">{{currentChallenge.dateCreated | date: 'HH:mm, MMM d, y'}}</span>

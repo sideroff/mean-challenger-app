@@ -9,9 +9,30 @@ module.exports = {
         Challenge.aggregate([
             { $sort: { 'dateCreated': -1 } },
             { $skip: page > 0 ? ((page - 1) * amount) : 0 },
-            { $limit: amount }
+            { $limit: amount },
+            {
+                $lookup: {
+                    from: "users",
+                    localField: "author",
+                    foreignField: "_id",
+                    as: "author"
+                }
+            },
+            {
+                $project: {
+                    'name': 1,
+                    'urlName': 1,
+                    'description': 1, 
+                    'author.username': 1,
+                    'participations': 1,
+                    'completedBy': 1,
+                    'dateCreated': 1
+                }
+            }
+
         ]).then(
             result => {
+                result.forEach(r => r.author = r.author[0].username)
                 respond(res, 200, result)
             },
             err => {
@@ -31,7 +52,7 @@ module.exports = {
                     as: "author"
                 }
             },
-            {$project: {'name': 1, 'urlName': 1, 'description': 1,'dateCreated' : 1, 'author.username': 1, 'participations': 1, 'completedBy': 1}}
+            { $project: { 'name': 1, 'urlName': 1, 'description': 1, 'dateCreated': 1, 'author.username': 1, 'participations': 1, 'completedBy': 1 } }
         ]).then(
             result => {
                 if (!result || result.length == 0) {
