@@ -32,7 +32,6 @@ let challengeSchema = new Schema({
         user: {
             type: Schema.Types.ObjectId,
             ref: 'User',
-            default: []
         },
         active: {
             type: Boolean,

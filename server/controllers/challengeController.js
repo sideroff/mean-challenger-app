@@ -62,7 +62,6 @@ module.exports = {
                 }
                 result = result[0]
                 result.author = result.author[0].username
-                console.log('updating')
                 Challenge.update({ urlName: result.urlName }, { $inc: { 'views': 1 } }).then(
                     r => {
                         respond(res, 200, result)
@@ -88,6 +87,7 @@ module.exports = {
                 respond(res, 200, { type: 'success', text: 'Challenge created successfully!', urlName: result.urlName })
             },
             err => {
+                console.log(err)
                 if (err.name == 'MongoError' && err.code == 11000) {
                     respond(res, 400, { type: 'error', text: 'A challenge with such url name already exists!' })
                     return
