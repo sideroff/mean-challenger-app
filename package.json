@@ -1,13 +1,13 @@
 {
-  "name": "store_management_system",
+  "name": "mean challener",
   "version": "1.0.0",
-  "description": "",
+  "description": "A MEAN SPA where you register, create challenges for people and complete theirs. ",
   "main": "index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
     "start": "node index.js"
   },
-  "author": "",
+  "author": "https://github.com/sideroff",
   "license": "MIT",
   "dependencies": {
     "bcrypt": "1.0.2",
