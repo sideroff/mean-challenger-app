@@ -50,20 +50,29 @@ let challengeSchema = new Schema({
 })
 
 challengeSchema.method({
-    addParticipation: function (userId) {
-        this.participations.push({userId})
+    addParticipation: function (userId, callback) {
+        let oldParticipation = this.participations.find(p => p.user == userId)
+        if (oldParticipation) {
+            oldParticipation.active = true
+        }
+        else {
+            this.participations.push({ user: userId })
+        }
+        this.save(callback)
     },
-    removeParticipation: function (userId) {
-        let participation = this.participations.find(p => {p.user = userId})
+    removeParticipation: function (userId, callback) {
+        let participation = this.participations.find(p => p.user == userId)
 
         if (participation) {
             participation.active = false
         }
+        this.save(callback)
     },
-    completeChallenge: function (userId) {
-        this.removeParticipation(userId)
-
-        this.completedBy.push(userId)
+    completeChallenge: function (userId, callback) {
+        this.removeParticipation(userId, function () {
+            this.completedBy.push(userId)
+            this.save(callback)
+        })
     }
 })
 

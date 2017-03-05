@@ -44,7 +44,7 @@ module.exports = {
         let urlName = req.params.urlName
 
         Challenge.aggregate([
-            { $match: { 'urlName': urlName } },
+            { $match: { 'urlName': 'test' } },
             {
                 $lookup: {
                     from: "users",
@@ -53,7 +53,55 @@ module.exports = {
                     as: "author"
                 }
             },
-            { $project: { 'name': 1, 'urlName': 1, 'description': 1, 'dateCreated': 1, 'author.username': 1, 'participations': 1, 'completedBy': 1, 'views': 1 } }
+            { $unwind: '$author' },
+            {
+                $unwind: {
+                    path: '$participations',
+                    preserveNullAndEmptyArrays: true
+                }
+            },
+            {
+                $lookup: {
+                    from: "users",
+                    localField: "participations.user",
+                    foreignField: "_id",
+                    as: "participations"
+                }
+            },
+            {
+                $unwind: {
+                    path: '$participations',
+                    preserveNullAndEmptyArrays: true
+                }
+            },
+            {
+                $unwind: {
+                    path: '$completedBy',
+                    preserveNullAndEmptyArrays: true
+                }
+            },
+
+            {
+                $lookup: {
+                    from: "users",
+                    localField: "completedBy",
+                    foreignField: "_id",
+                    as: "completedBy"
+                }
+            },
+            {
+                $unwind: {
+                    path: '$completedBy',
+                    preserveNullAndEmptyArrays: true
+                }
+            },
+            {
+                $group: {
+                    _id: { name: '$name', urlName: '$urlName', description: '$description', author: '$author.username', dateCreated: '$dateCreated', views: '$views' },
+                    participations: { '$push': '$participations.username' },
+                    completedBy: { '$push': '$completedBy.username' },
+                }
+            }
         ]).then(
             result => {
                 if (!result || result.length == 0) {
@@ -61,8 +109,8 @@ module.exports = {
                     return
                 }
                 result = result[0]
-                result.author = result.author[0].username
-                Challenge.update({ urlName: result.urlName }, { $inc: { 'views': 1 } }).then(
+                console.log(result)
+                Challenge.update({ urlName: result._id.urlName }, { $inc: { 'views': 1 } }).then(
                     r => {
                         respond(res, 200, result)
                     },
@@ -98,7 +146,24 @@ module.exports = {
 
     },
     participate: (req, res) => {
+        let urlName = req.params.urlName
+        console.log(req.params)
+        Challenge.findOne({ 'urlName': urlName }).then(
+            result => {
+                result.addParticipation(req.user._id, function (err, result) {
+                    if (err) {
+                        respond(res, 500, { type: 'error', text: 'Something went wrong while processing your request!' })
+                        return
+                    }
+                    respond(res, 200, { type: 'success', text: 'You have successfully participated!' })
+                })
 
+            },
+            err => {
+                console.log(err)
+                respond(res, 500, { type: 'error', text: 'Something went wrong while processing your request!' })
+            }
+        )
     },
     unParticipate: (req, res) => {
 

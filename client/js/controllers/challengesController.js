@@ -10,11 +10,13 @@ app.controller('challengesController', function ($rootScope, $scope, $routeParam
         $http({
             method: 'GET',
             url: '/api/challenges/' + $routeParams.urlName
-        })
-            .then(
+        }).then(
             result => {
-                console.log(result.data)
-                $scope.currentChallenge = result.data
+                let challange = result.data._id
+                challange.participations = result.data.participations
+                challange.completedBy = result.data.completedBy
+                
+                $scope.currentChallenge = challange
             },
             err => {
                 $scope.err = err.data.text
@@ -26,14 +28,15 @@ app.controller('challengesController', function ($rootScope, $scope, $routeParam
         if (string.length < limit + margin) {
             return string
         }
-        console.log('len: ',string.length)
-        console.log('shortened: ', margin * (1 - (margin / string.length)))
+        console.log('calling mapToCorrectLength')
         // number of chars depends on the length and is within the margin 
         return string.substring(0, limit + margin * (1 - margin / string.length))
     }
 
     $scope.nextPage = function () {
+        console.log('calling nextPage')
         if ($scope.busy) return
+        console.log('nextPage getting through')
         $scope.busy = true
         $http({
             method: 'GET',
@@ -83,13 +86,23 @@ app.controller('challengesController', function ($rootScope, $scope, $routeParam
             })
     }
 
-    $scope.get = function () {
-        console.log('getting')
-        return 'got'
-    }
-
-    $scope.participate = function () {
-
+    $scope.participate = function (challenge) {
+        console.log(challenge)
+        $http({
+            method: 'POST',
+            url: '/api/challenges/' + challenge.urlName + '/participate',
+            headers: {
+                'Authorization': 'Bearer ' + $rootScope.user.jwt
+            },
+        }).then(
+            result => {
+                challenge.participations.unshift($rootScope.user.username)
+                popupService.addPopup(result)
+            },
+            err => {
+                popupService.addPopup(err)
+            }
+            )
     }
 
     $scope.unParticipate = function () {
