@@ -1,5 +1,5 @@
 {
-  "name": "mean challener",
+  "name": "store_management_system",
   "version": "1.0.0",
   "description": "A MEAN SPA where you register, create challenges for people and complete theirs. ",
   "main": "index.js",
