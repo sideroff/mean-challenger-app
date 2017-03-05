@@ -43,7 +43,11 @@ let challengeSchema = new Schema({
         type: Schema.Types.ObjectId,
         ref: 'User',
         default: []
-    }]
+    }],
+    views: {
+        type: Number,
+        default: 0
+    }
 })
 
 challengeSchema.method({

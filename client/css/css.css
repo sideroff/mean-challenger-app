@@ -25,3 +25,7 @@ textarea { resize: vertical; }
 div {
   word-wrap: break-word;
 }
+.challenge-footer {
+  display: flex;
+  justify-content: space-between;
+}

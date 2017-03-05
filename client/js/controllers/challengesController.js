@@ -13,6 +13,7 @@ app.controller('challengesController', function ($rootScope, $scope, $routeParam
         })
             .then(
             result => {
+                console.log(result.data)
                 $scope.currentChallenge = result.data
             },
             err => {
@@ -21,10 +22,12 @@ app.controller('challengesController', function ($rootScope, $scope, $routeParam
     }
 
 
-    $scope.mapToCorrectLength = function (string, margin = 200, limit = 700) {
+    $scope.mapToCorrectLength = function (string, margin = 300, limit = 700) {
         if (string.length < limit + margin) {
             return string
         }
+        console.log('len: ',string.length)
+        console.log('shortened: ', margin * (1 - (margin / string.length)))
         // number of chars depends on the length and is within the margin 
         return string.substring(0, limit + margin * (1 - margin / string.length))
     }

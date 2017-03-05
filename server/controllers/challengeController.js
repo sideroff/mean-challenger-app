@@ -22,11 +22,12 @@ module.exports = {
                 $project: {
                     'name': 1,
                     'urlName': 1,
-                    'description': 1, 
+                    'description': 1,
                     'author.username': 1,
-                    'participations': 1,
-                    'completedBy': 1,
-                    'dateCreated': 1
+                    'participations': { $size: '$participations' },
+                    'completedBy': { $size: '$completedBy' },
+                    'dateCreated': 1,
+                    'views': 1
                 }
             }
 
@@ -52,7 +53,7 @@ module.exports = {
                     as: "author"
                 }
             },
-            { $project: { 'name': 1, 'urlName': 1, 'description': 1, 'dateCreated': 1, 'author.username': 1, 'participations': 1, 'completedBy': 1 } }
+            { $project: { 'name': 1, 'urlName': 1, 'description': 1, 'dateCreated': 1, 'author.username': 1, 'participations': 1, 'completedBy': 1, 'views': 1 } }
         ]).then(
             result => {
                 if (!result || result.length == 0) {
@@ -61,9 +62,19 @@ module.exports = {
                 }
                 result = result[0]
                 result.author = result.author[0].username
-                respond(res, 200, result)
+                console.log('updating')
+                Challenge.update({ urlName: result.urlName }, { $inc: { 'views': 1 } }).then(
+                    r => {
+                        respond(res, 200, result)
+                    },
+                    e => {
+                        console.log(err)
+                        respond(res, 500, { type: 'error', text: 'Something went wrong while processing your request.' })
+                    }
+                )
             },
             err => {
+                console.log(err)
                 respond(res, 500, { type: 'error', text: 'Something went wrong while processing your request.' })
             })
     },

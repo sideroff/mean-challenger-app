@@ -11,10 +11,12 @@
         <div class="panel-body">
           <span>by: <a href="/users/{{challenge.author}}">{{challenge.author}}</a></span>
           <span style="float:right;">{{challenge.dateCreated | date: 'HH:mm, MMM d, y'}}</span>
-          <hr>
         </div>
-        <div>{{challenge.participations}}</div>
-        <div>{{challenge.completedBy}}</div>
+        <div class="panel-footer challenge-footer">
+          <span class="glyphicon glyphicon-eye-open"> {{challenge.views}}</span>
+          <span class="glyphicon glyphicon-edit"> {{challenge.participations}}</span>
+          <span class="glyphicon glyphicon-check"> {{challenge.completedBy}}</span>
+        </div>
       </div>
     </ul>
   </div>
