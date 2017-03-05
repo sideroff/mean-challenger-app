@@ -1,7 +1,7 @@
 <div ng-controller='challengesController' class="container container-fluid">
   <div infinite-scroll='nextPage()'>
-    <ul angular-grid="challenges">
-      <div ng-repeat="challenge in challenges" class="panel panel-default">
+    <ul angular-grid="challenges" class="dynamic-grid">
+      <div ng-repeat="challenge in challenges" class="panel panel-default grid">
         <a href="{{'/challenges/' + challenge.urlName}}">
           <div class="panel-heading">
             <h4>{{challenge.name}}</h4>
