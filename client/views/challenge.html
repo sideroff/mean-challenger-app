@@ -16,8 +16,8 @@
         </div>
         <div class="panel-footer">
             <div ng-if="currentChallenge.participations.length > 0">
-                <h4>Participators:</h4>
-                <span ng-repeat="p in currentChallenge.participations">
+                <h4>Participators: </h4>
+                <span ng-repeat="p in currentChallenge.participations | filter:{active: true} as filtered">
                     <a href="/users/{{p.user}}">{{p.user}}</a>
                 </span>
             </div>
