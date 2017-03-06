@@ -42,9 +42,9 @@ module.exports = {
     },
     get: (req, res) => {
         let urlName = req.params.urlName
-
+        // this query returns participations: [{}] if we have no participations
         Challenge.aggregate([
-            { $match: { 'urlName': 'test' } },
+            { $match: { 'urlName': urlName } },
             {
                 $lookup: {
                     from: "users",
@@ -65,12 +65,12 @@ module.exports = {
                     from: "users",
                     localField: "participations.user",
                     foreignField: "_id",
-                    as: "participations"
+                    as: "participations.user"
                 }
             },
             {
                 $unwind: {
-                    path: '$participations',
+                    path: '$participations.user',
                     preserveNullAndEmptyArrays: true
                 }
             },
@@ -80,7 +80,6 @@ module.exports = {
                     preserveNullAndEmptyArrays: true
                 }
             },
-
             {
                 $lookup: {
                     from: "users",
@@ -98,7 +97,7 @@ module.exports = {
             {
                 $group: {
                     _id: { name: '$name', urlName: '$urlName', description: '$description', author: '$author.username', dateCreated: '$dateCreated', views: '$views' },
-                    participations: { '$push': '$participations.username' },
+                    participations: { '$push': '$participations' },
                     completedBy: { '$push': '$completedBy.username' },
                 }
             }
@@ -109,7 +108,9 @@ module.exports = {
                     return
                 }
                 result = result[0]
-                console.log(result)
+                if (!Object.keys(result.participations[0]).length) {
+                    result.participations = []
+                }
                 Challenge.update({ urlName: result._id.urlName }, { $inc: { 'views': 1 } }).then(
                     r => {
                         respond(res, 200, result)

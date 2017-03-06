@@ -15,7 +15,7 @@ app.controller('challengesController', function ($rootScope, $scope, $routeParam
                 let challange = result.data._id
                 challange.participations = result.data.participations
                 challange.completedBy = result.data.completedBy
-                
+
                 $scope.currentChallenge = challange
             },
             err => {
@@ -87,7 +87,6 @@ app.controller('challengesController', function ($rootScope, $scope, $routeParam
     }
 
     $scope.participate = function (challenge) {
-        console.log(challenge)
         $http({
             method: 'POST',
             url: '/api/challenges/' + challenge.urlName + '/participate',
@@ -97,7 +96,7 @@ app.controller('challengesController', function ($rootScope, $scope, $routeParam
         }).then(
             result => {
                 challenge.participations.unshift($rootScope.user.username)
-                popupService.addPopup(result)
+                popupService.addPopup(result.data)
             },
             err => {
                 popupService.addPopup(err)
