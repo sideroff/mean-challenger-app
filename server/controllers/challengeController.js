@@ -93,11 +93,11 @@ module.exports = {
                     path: '$completedBy',
                     preserveNullAndEmptyArrays: true
                 }
-            },            
+            },
             {
                 $group: {
                     _id: { name: '$name', urlName: '$urlName', description: '$description', author: '$author.username', dateCreated: '$dateCreated', views: '$views' },
-                    participations: { '$push': {user: '$participations.user.username', active: '$participations.active'} },
+                    participations: { '$push': { user: '$participations.user.username', active: '$participations.active' } },
                     completedBy: { '$push': '$completedBy.username' },
                 }
             }
@@ -151,14 +151,35 @@ module.exports = {
         console.log(req.params)
         Challenge.findOne({ 'urlName': urlName }).then(
             result => {
-                result.addParticipation(req.user._id, function (err, result) {
+                let participation = result.participations.find(p => p.user == req.user._id)
+                console.log(result.participations)
+                console.log(participation)
+                console.log(!participation)
+
+                // no participation => add
+                if (!participation) {
+                    result.addParticipation(req.user._id, function (err, result) {
+                        if (err) {
+                            respond(res, 500, { type: 'error', text: 'Something went wrong while processing your request!' })
+                            return
+                        }
+                        respond(res, 200, { type: 'success', text: 'You have successfully participated!' })
+                        return
+                    })
+                    return
+                }
+                // have participated before => if its active: err, renew if its been canceled
+                if (participation.active) {
+                    respond(res, 400, { type: 'error', text: 'You have already participated to this challenge' })
+                    return
+                }
+                result.renewParticipation(participation, function (err, result) {
                     if (err) {
                         respond(res, 500, { type: 'error', text: 'Something went wrong while processing your request!' })
                         return
                     }
                     respond(res, 200, { type: 'success', text: 'You have successfully participated!' })
                 })
-
             },
             err => {
                 console.log(err)
@@ -167,7 +188,19 @@ module.exports = {
         )
     },
     unParticipate: (req, res) => {
+        let urlName = req.params.urlName
+        Challenge.findOne({ urlName: urlName }).then(
+            result => {
+                result.removeParticipation(req.user._id, function (err, result) {
+                    if (err) {
 
+                    }
+                })
+            },
+            err => {
+
+            }
+        )
     },
     complete: (req, res) => {
 

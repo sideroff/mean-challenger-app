@@ -1,9 +1,9 @@
 
 
 app.controller('challengesController', function ($rootScope, $scope, $routeParams, $http, $location, userService, popupService) {
-    
+
     $scope.currentUser = $rootScope.user
-    
+
     $scope.challenges = []
     $scope.busy = false
     $scope.page = 1
@@ -112,7 +112,7 @@ app.controller('challengesController', function ($rootScope, $scope, $routeParam
         }).then(
             result => {
                 challenge.hasParticipated = true
-                challenge.participations.unshift({user: $rootScope.user.username, active: true})
+                challenge.participations.unshift({ user: $rootScope.user.username, active: true })
                 popupService.addPopup(result.data)
             },
             err => {
@@ -121,6 +121,20 @@ app.controller('challengesController', function ($rootScope, $scope, $routeParam
     }
 
     $scope.unParticipate = function (challenge) {
-
+        $http({
+            method: 'POST',
+            url: '/api/challenges/' + challenge.urlName + '/un-participate',
+            headers: {
+                'Authorization': 'Bearer ' + $rootScope.user.jwt
+            },
+        }).then(
+            result => {
+                challenge.hasParticipated = false
+                challenge.participations.unshift({ user: $rootScope.user.username, active: true })
+                popupService.addPopup(result.data)
+            },
+            err => {
+                popupService.addPopup(err)
+            })
     }
 })

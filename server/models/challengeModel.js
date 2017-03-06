@@ -50,14 +50,13 @@ let challengeSchema = new Schema({
 })
 
 challengeSchema.method({
+    renewParticipation: function(participation, callback) {
+        participation.active = true
+        this.save(callback)
+    },
     addParticipation: function (userId, callback) {
-        let oldParticipation = this.participations.find(p => p.user == userId)
-        if (oldParticipation) {
-            oldParticipation.active = true
-        }
-        else {
-            this.participations.push({ user: userId })
-        }
+        this.participations.push({ user: userId })
+        console.log('adding participation')
         this.save(callback)
     },
     removeParticipation: function (userId, callback) {
