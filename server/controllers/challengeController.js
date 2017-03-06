@@ -148,13 +148,9 @@ module.exports = {
     },
     participate: (req, res) => {
         let urlName = req.params.urlName
-        console.log(req.params)
         Challenge.findOne({ 'urlName': urlName }).then(
             result => {
                 let participation = result.participations.find(p => p.user == req.user._id)
-                console.log(result.participations)
-                console.log(participation)
-                console.log(!participation)
 
                 // no participation => add
                 if (!participation) {
@@ -191,14 +187,21 @@ module.exports = {
         let urlName = req.params.urlName
         Challenge.findOne({ urlName: urlName }).then(
             result => {
-                result.removeParticipation(req.user._id, function (err, result) {
+                let participation = result.participations.find(p => p.user == req.user._id)
+                if (!participation || !participation.active) {
+                    respond(res, 500, { type: 'error', text: 'You must participate first!' })
+                    return
+                }
+                result.removeParticipation(participation, function (err, result) {
                     if (err) {
-
+                        respond(res, 500, { type: 'error', text: 'Something went wrong while processing your request!' })
+                        return
                     }
+                    respond(res, 200, { type: 'error', text: 'You have successfully unparticipated from this challenge!' })
                 })
             },
             err => {
-
+                respond(res, 500, { type: 'error', text: 'Something went wrong while processing your request!' })
             }
         )
     },
