@@ -122,7 +122,7 @@ app.controller('challengesController', function ($rootScope, $scope, $routeParam
                 if (index) {
                     challenge.participations.splice(index, 1)
                 }
-                challenge.participations.unshift({ user: $rootScope.user.username, active: true })
+                challenge.participations.push({ user: $rootScope.user.username, active: true })
                 popupService.addPopup(result.data)
             },
             err => {
