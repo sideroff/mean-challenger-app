@@ -10,14 +10,14 @@
             <span>by: <a href="/users/{{currentChallenge.author}}">{{currentChallenge.author}}</a></span>
             <span style="float:right;">{{currentChallenge.dateCreated | date: 'HH:mm, MMM d, y'}}</span>
         </div>
+        <div class="panel-footer" ng-controller="usersController">
+            <button ng-if="user && !currentChallenge.hasParticipated" ng-click="participate(currentChallenge)" class="btn btn-default">Participate</button>
+            <button ng-if="user && currentChallenge.hasParticipated" ng-click="unParticipate(currentChallenge)" class="btn btn-default">Cancel participation</button>
+        </div>
         <div class="panel-footer">
             <span>{{currentChallenge.participations}}</span>
             <span>{{currentChallenge.completedBy}}</span>
         </div>
-        <div ng-controller="usersController">
-            <button ng-if="user" ng-click="participate(currentChallenge)" class="btn btn-default" type="button">Participate</button>
-        </div>
-
     </div>
     <span ng-if="err">{{err}}</span>
 </div>

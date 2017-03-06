@@ -1,10 +1,14 @@
 
 
 app.controller('challengesController', function ($rootScope, $scope, $routeParams, $http, $location, userService, popupService) {
+    
+    $scope.currentUser = $rootScope.user
+    
     $scope.challenges = []
     $scope.busy = false
     $scope.page = 1
     $scope.amount = 10
+
 
     if ($routeParams.urlName && !$scope.currentChallenge) {
         $http({
@@ -12,17 +16,29 @@ app.controller('challengesController', function ($rootScope, $scope, $routeParam
             url: '/api/challenges/' + $routeParams.urlName
         }).then(
             result => {
-                let challange = result.data._id
-                challange.participations = result.data.participations
-                challange.completedBy = result.data.completedBy
-
-                $scope.currentChallenge = challange
+                let challenge = result.data._id
+                challenge.participations = result.data.participations
+                challenge.completedBy = result.data.completedBy
+                if ($rootScope.user) {
+                    attachHasParticipated(challenge)
+                    console.log(challenge)
+                }
+                $scope.currentChallenge = challenge
             },
             err => {
                 $scope.err = err.data.text
             })
     }
 
+    function attachHasParticipated(challenge) {
+        let participation = challenge.participations.find(p => p.user == $rootScope.user.username)
+        if (!participation) {
+            challenge.hasParticipated = false
+        }
+        else {
+            challenge.hasParticipated = participation.active
+        }
+    }
 
     $scope.mapToCorrectLength = function (string, margin = 300, limit = 700) {
         if (string.length < limit + margin) {
@@ -95,16 +111,16 @@ app.controller('challengesController', function ($rootScope, $scope, $routeParam
             },
         }).then(
             result => {
-                challenge.participations.unshift($rootScope.user.username)
+                challenge.hasParticipated = true
+                challenge.participations.unshift({user: $rootScope.user.username, active: true})
                 popupService.addPopup(result.data)
             },
             err => {
                 popupService.addPopup(err)
-            }
-            )
+            })
     }
 
-    $scope.unParticipate = function () {
+    $scope.unParticipate = function (challenge) {
 
     }
 })
