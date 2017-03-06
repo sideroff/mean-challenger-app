@@ -44,7 +44,7 @@ module.exports = {
         let urlName = req.params.urlName
         // this query returns participations: [{}] if we have no participations
         Challenge.aggregate([
-            { $match: { 'urlName': urlName } },
+            { $match: { 'urlName': 'test' } },
             {
                 $lookup: {
                     from: "users",
@@ -94,10 +94,11 @@ module.exports = {
                     preserveNullAndEmptyArrays: true
                 }
             },
+            
             {
                 $group: {
                     _id: { name: '$name', urlName: '$urlName', description: '$description', author: '$author.username', dateCreated: '$dateCreated', views: '$views' },
-                    participations: { '$push': '$participations' },
+                    participations: { '$push': {user: '$participations.user.username', active: '$participations.active'} },
                     completedBy: { '$push': '$completedBy.username' },
                 }
             }
