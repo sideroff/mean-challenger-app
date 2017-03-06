@@ -15,8 +15,18 @@
             <button ng-if="user && currentChallenge.hasParticipated" ng-click="unParticipate(currentChallenge)" class="btn btn-default">Cancel participation</button>
         </div>
         <div class="panel-footer">
-            <span>{{currentChallenge.participations}}</span>
-            <span>{{currentChallenge.completedBy}}</span>
+            <div ng-if="currentChallenge.participations.length > 0">
+                <h4>Participators:</h4>
+                <span ng-repeat="p in currentChallenge.participations">
+                    <a href="/users/{{p.user}}">{{p.user}}</a>
+                </span>
+            </div>
+            <div ng-if="currentChallenge.completedBy.length > 0">
+                <h4>completed by:</h4>
+                <span ng-repeat="c in currentChallenge.completedBy">
+                    <a href="/users/{{c.user}}">{{c.user}}</a>
+                </span>
+            </div>
         </div>
     </div>
     <span ng-if="err">{{err}}</span>

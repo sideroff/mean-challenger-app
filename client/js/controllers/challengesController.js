@@ -112,6 +112,16 @@ app.controller('challengesController', function ($rootScope, $scope, $routeParam
         }).then(
             result => {
                 challenge.hasParticipated = true
+                let index
+                for (let i in challenge.participations) {
+                    if (challenge.participations[i].user == $rootScope.user.username) {
+                        index = i
+                        break
+                    }
+                }
+                if (index) {
+                    challenge.participations.splice(index, 1)
+                }
                 challenge.participations.unshift({ user: $rootScope.user.username, active: true })
                 popupService.addPopup(result.data)
             },
@@ -130,7 +140,10 @@ app.controller('challengesController', function ($rootScope, $scope, $routeParam
         }).then(
             result => {
                 challenge.hasParticipated = false
-                challenge.participations.unshift({ user: $rootScope.user.username, active: true })
+                let p = challenge.participations.find(p => p.user == $rootScope.user.username)
+                if (p) {
+                    p.active = false
+                }
                 popupService.addPopup(result.data)
             },
             err => {

@@ -197,7 +197,7 @@ module.exports = {
                         respond(res, 500, { type: 'error', text: 'Something went wrong while processing your request!' })
                         return
                     }
-                    respond(res, 200, { type: 'error', text: 'You have successfully unparticipated from this challenge!' })
+                    respond(res, 200, { type: 'success', text: 'You have successfully unparticipated from this challenge!' })
                 })
             },
             err => {
