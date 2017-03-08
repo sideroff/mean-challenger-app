@@ -150,6 +150,13 @@ module.exports = {
         let urlName = req.params.urlName
         Challenge.findOne({ 'urlName': urlName }).then(
             result => {
+
+                
+                if (checkIfAlreadyCompleted(result, req.user._id)) {
+                    respond(res, 409, { type: 'error', text: 'You have already completed this challenge!' })
+                    return
+                }
+
                 let participation = result.participations.find(p => p.user == req.user._id)
 
                 // no participation => add
@@ -187,6 +194,12 @@ module.exports = {
         let urlName = req.params.urlName
         Challenge.findOne({ urlName: urlName }).then(
             result => {
+
+                if (checkIfAlreadyCompleted(result, req.user._id)) {
+                    respond(res, 409, { type: 'error', text: 'You have already completed this challenge!' })
+                    return
+                }
+
                 let participation = result.participations.find(p => p.user == req.user._id)
                 if (!participation || !participation.active) {
                     respond(res, 500, { type: 'error', text: 'You must participate to this challenge first!' })
@@ -214,8 +227,7 @@ module.exports = {
                     return
                 }
 
-                let alreadyCompleted = result.completedBy.find(c => c == req.user._id)
-                if (alreadyCompleted) {
+                if (checkIfAlreadyCompleted(result, req.user._id)) {
                     respond(res, 409, { type: 'error', text: 'You have already completed this challenge!' })
                     return
                 }
@@ -247,5 +259,11 @@ module.exports = {
     }
 }
 
+function checkIfAlreadyCompleted(challenge, userId) {
+
+    let alreadyCompleted = challenge.completedBy.find(c => c == userId)
+    return alreadyCompleted
+    
+}
 
 
