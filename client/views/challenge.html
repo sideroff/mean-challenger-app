@@ -7,7 +7,7 @@
             <p>{{currentChallenge.description}}</p>
         </div>
         <div class="panel-body">
-            <span>by: <a href="/users/{{currentChallenge.author}}">{{currentChallenge.author}}</a></span>
+            <span>by: <a href="/users/{{currentChallenge.author.username}}">{{currentChallenge.author.username}}</a></span>
             <span style="float:right;">{{currentChallenge.dateCreated | date: 'HH:mm, MMM d, y'}}</span>
         </div>
         <div class="panel-footer" ng-controller="usersController">
@@ -20,13 +20,13 @@
             <div ng-if="currentChallenge.participations.length > 0">
                 <h4>Participators: </h4>
                 <span ng-repeat="p in currentChallenge.participations | filter:{active: true} as filtered">
-                    <a href="/users/{{p.user}}">{{p.user}}</a>
+                    <a href="/users/{{p.user}}">{{p.user.username}}</a>
                 </span>
             </div>
             <div ng-if="currentChallenge.completedBy.length > 0">
                 <h4>completed by:</h4>
                 <span ng-repeat="c in currentChallenge.completedBy">
-                    <a href="/users/{{c}}">{{c}}</a>
+                    <a href="/users/{{c.username}}">{{c.username}}</a>
                 </span>
             </div>
         </div>

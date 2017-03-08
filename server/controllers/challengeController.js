@@ -42,76 +42,20 @@ module.exports = {
     },
     get: (req, res) => {
         let urlName = req.params.urlName
-        // this query returns participations: [{}] if we have no participations
-        Challenge.aggregate([
-            { $match: { 'urlName': urlName } },
-            {
-                $lookup: {
-                    from: "users",
-                    localField: "author",
-                    foreignField: "_id",
-                    as: "author"
-                }
-            },
-            { $unwind: '$author' },
-            {
-                $unwind: {
-                    path: '$participations',
-                    preserveNullAndEmptyArrays: true
-                }
-            },
-            {
-                $lookup: {
-                    from: "users",
-                    localField: "participations.user",
-                    foreignField: "_id",
-                    as: "participations.user"
-                }
-            },
-            {
-                $unwind: {
-                    path: '$participations.user',
-                    preserveNullAndEmptyArrays: true
-                }
-            },
-            {
-                $unwind: {
-                    path: '$completedBy',
-                    preserveNullAndEmptyArrays: true
-                }
-            },
-            {
-                $lookup: {
-                    from: "users",
-                    localField: "completedBy",
-                    foreignField: "_id",
-                    as: "completedBy"
-                }
-            },
-            {
-                $unwind: {
-                    path: '$completedBy',
-                    preserveNullAndEmptyArrays: true
-                }
-            },
-            {
-                $group: {
-                    _id: { name: '$name', urlName: '$urlName', description: '$description', author: '$author.username', dateCreated: '$dateCreated', views: '$views' },
-                    participations: { '$push': { user: '$participations.user.username', active: '$participations.active' } },
-                    completedBy: { '$push': '$completedBy.username' },
-                }
-            }
-        ]).then(
+        // fml
+        Challenge.find()
+        .where({urlName: urlName})
+        .populate({path: 'author', select: 'username'})
+        .populate({path: 'participations.user', select: 'username'})
+        .populate({path: 'completedBy', select: 'username'})
+        .then(
             result => {
                 if (!result || result.length == 0) {
                     respond(res, 404, { type: 'error', text: 'No such challenge found :(' })
                     return
                 }
                 result = result[0]
-                if (!Object.keys(result.participations[0]).length) {
-                    result.participations = []
-                }
-                Challenge.update({ urlName: result._id.urlName }, { $inc: { 'views': 1 } }).then(
+                Challenge.update({ urlName: result.urlName }, { $inc: { 'views': 1 } }).then(
                     r => {
                         respond(res, 200, result)
                     },

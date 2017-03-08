@@ -16,14 +16,14 @@ app.controller('challengesController', function ($rootScope, $scope, $routeParam
             url: '/api/challenges/' + $routeParams.urlName
         }).then(
             result => {
-                let challenge = result.data._id
-                challenge.participations = result.data.participations
-                challenge.completedBy = result.data.completedBy
+                console.log(result)
+                let challenge = result.data
                 if ($rootScope.user) {
                     attachHasParticipated(challenge)
                     attachHasCompleted(challenge)
                 }
                 $scope.currentChallenge = challenge
+                console.log($scope.currentChallenge)
             },
             err => {
                 $scope.err = err.data.text
@@ -31,7 +31,7 @@ app.controller('challengesController', function ($rootScope, $scope, $routeParam
     }
 
     function attachHasParticipated(challenge) {
-        let participation = challenge.participations.find(p => p.user == $rootScope.user.username)
+        let participation = challenge.participations.find(p => p.user.username == $rootScope.user.username)
         if (!participation) {
             challenge.hasParticipated = false
         }
@@ -41,7 +41,7 @@ app.controller('challengesController', function ($rootScope, $scope, $routeParam
     }
 
     function attachHasCompleted(challenge) {
-        let completion = challenge.completedBy.find(c => c == $rootScope.user.username)
+        let completion = challenge.completedBy.find(c => c.username == $rootScope.user.username)
         if (!completion) {
             challenge.hasCompleted = false
         }
@@ -122,17 +122,8 @@ app.controller('challengesController', function ($rootScope, $scope, $routeParam
         }).then(
             result => {
                 challenge.hasParticipated = true
-                let index
-                for (let i in challenge.participations) {
-                    if (challenge.participations[i].user == $rootScope.user.username) {
-                        index = i
-                        break
-                    }
-                }
-                if (index) {
-                    challenge.participations.splice(index, 1)
-                }
-                challenge.participations.push({ user: $rootScope.user.username, active: true })
+                removeFromParticipationsArray($rootScope.user.username, challenge)
+                challenge.participations.push({ user: {username: $rootScope.user.username}, active: true })
                 popupService.addPopup(result.data)
             },
             err => {
@@ -140,6 +131,18 @@ app.controller('challengesController', function ($rootScope, $scope, $routeParam
             })
     }
 
+    function removeFromParticipationsArray(username, challenge) {
+        let index
+        for (let i in challenge.participations) {
+            if (challenge.participations[i].user.username == username) {
+                index = i
+                break
+            }
+        }
+        if (index) {
+            challenge.participations.splice(index, 1)
+        }
+    }
     $scope.unParticipate = function (challenge) {
         $http({
             method: 'POST',
@@ -150,10 +153,8 @@ app.controller('challengesController', function ($rootScope, $scope, $routeParam
         }).then(
             result => {
                 challenge.hasParticipated = false
-                let p = challenge.participations.find(p => p.user == $rootScope.user.username)
-                if (p) {
-                    p.active = false
-                }
+                removeFromParticipationsArray($rootScope.user.username, challenge)
+                challenge.participations.push({ user: {username: $rootScope.user.username}, active: false })
                 popupService.addPopup(result.data)
             },
             err => {
@@ -170,11 +171,13 @@ app.controller('challengesController', function ($rootScope, $scope, $routeParam
         }).then(
             result => {
                 popupService.addPopup(result.data)
+                removeFromParticipationsArray($rootScope.user.username, challenge)
+                challenge.completedBy.push({username: $rootScope.user.username})
                 challenge.hasCompleted = true
             },
-            err => {                
+            err => {
                 console.log(err)
             }
-        )
+            )
     }
 })
