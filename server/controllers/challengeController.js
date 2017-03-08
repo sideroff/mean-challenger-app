@@ -7,7 +7,7 @@ module.exports = {
         let amount = Number(req.query.amount)
 
         Challenge.find()
-        .sort({ dateCreated: 1})
+        .sort({ dateCreated: -1})
         .skip(page > 0 ? ((page - 1) * amount) : 0 )
         .limit(amount ? amount : 0)
         .populate({path: 'author', select: 'username'})
