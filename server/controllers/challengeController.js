@@ -213,6 +213,13 @@ module.exports = {
                     respond(res, 404, { type: 'error', text: 'No challenge with such name found' })
                     return
                 }
+
+                let alreadyCompleted = result.completedBy.find(c => c == req.user._id)
+                if (alreadyCompleted) {
+                    respond(res, 409, { type: 'error', text: 'You have already completed this challenge!' })
+                    return
+                }
+
                 let participation = result.participations.find(p => p.user == req.user._id)
                 if (!participation || !participation.active) {
                     respond(res, 409, { type: 'error', text: 'You must participate to this challenge first!' })

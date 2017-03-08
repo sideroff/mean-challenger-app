@@ -164,7 +164,10 @@ app.controller('challengesController', function ($rootScope, $scope, $routeParam
     $scope.complete = function (challenge) {
         $http({
             method: 'POST',
-            url: '/api/challenges/' + challenge.urlName + '/complete'
+            url: '/api/challenges/' + challenge.urlName + '/complete',
+            headers: {
+                'Authorization': 'Bearer ' + $rootScope.user.jwt
+            },
         }).then(
             result => {
                 console.log(result)
