@@ -29,7 +29,8 @@ module.exports = {
                 if (result) {
                     let user = {
                         username: result.username,
-                        dateRegistered: result.dateRegistered
+                        dateRegistered: result.dateRegistered,
+                        email: result.email
                     }                    
                     respond(res, 200, {type: 'success', user: user})
                 }

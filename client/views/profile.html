@@ -1,5 +1,20 @@
 <div ng-if="userProfile">
-    {{userProfile}}
+    <div class="col-xs-2 col-sm-2 col-md-2 col-lg-2">
+        <img src="http://placehold.it/150x150" alt="" class="img-rounded img-responsive" />
+    </div>
+    <div>
+        <h4>{{userProfile.username}}</h4>
+        <small><cite title="San Francisco, USA">city, country <i class="glyphicon glyphicon-map-marker"></i></cite></small>
+        <p>
+            <i class="glyphicon glyphicon-envelope"></i> {{userProfile.email}}
+            <br />
+            <i class="glyphicon glyphicon-globe"></i><a href="http://www.website.com"> www.website.com</a>
+            <br />
+            <i class="glyphicon glyphicon-gift"></i> BirthDay</p>
+            <br />
+            Joined: {{userProfile.dateRegistered | date: 'MMM d, y' }}</p>
+
+    </div>
 </div>
 
 <div ng-if="err">
