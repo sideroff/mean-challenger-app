@@ -1,4 +1,4 @@
-var app = angular.module('meanStoreManagementSystem', ['ngResource', 'ngRoute', 'ngAnimate','infinite-scroll','angularGrid'])
+var app = angular.module('meanChallenger', ['ngResource', 'ngRoute', 'ngAnimate','infinite-scroll','angularGrid'])
 
 let routes = [
     {
