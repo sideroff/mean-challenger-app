@@ -6,34 +6,15 @@ module.exports = {
         let page = Number(req.query.page)
         let amount = Number(req.query.amount)
 
-        Challenge.aggregate([
-            { $sort: { 'dateCreated': -1 } },
-            { $skip: page > 0 ? ((page - 1) * amount) : 0 },
-            { $limit: amount },
-            {
-                $lookup: {
-                    from: "users",
-                    localField: "author",
-                    foreignField: "_id",
-                    as: "author"
-                }
-            },
-            {
-                $project: {
-                    'name': 1,
-                    'urlName': 1,
-                    'description': 1,
-                    'author.username': 1,
-                    'participations': { $size: '$participations' },
-                    'completedBy': { $size: '$completedBy' },
-                    'dateCreated': 1,
-                    'views': 1
-                }
-            }
-
-        ]).then(
+        Challenge.find()
+        .sort({ dateCreated: 1})
+        .skip(page > 0 ? ((page - 1) * amount) : 0 )
+        .limit(amount ? amount : 0)
+        .populate({path: 'author', select: 'username'})
+        .populate({path: 'participations.user', select: 'username'})
+        .populate({path: 'completedBy', select: 'username'})
+        .then(
             result => {
-                result.forEach(r => r.author = r.author[0].username)
                 respond(res, 200, result)
             },
             err => {

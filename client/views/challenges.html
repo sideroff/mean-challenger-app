@@ -9,13 +9,13 @@
         </a>
         <div class="panel-body">{{mapToCorrectLength(challenge.description)}}</div>
         <div class="panel-body">
-          <span>by: <a href="/users/{{challenge.author}}">{{challenge.author}}</a></span>
+          <span>by: <a href="/users/{{challenge.author.username}}">{{challenge.author.username}}</a></span>
           <span style="float:right;">{{challenge.dateCreated | date: 'HH:mm, MMM d, y'}}</span>
         </div>
         <div class="panel-footer challenge-footer">
           <span class="glyphicon glyphicon-eye-open"> {{challenge.views}}</span>
-          <span class="glyphicon glyphicon-edit"> {{challenge.participations}}</span>
-          <span class="glyphicon glyphicon-check"> {{challenge.completedBy}}</span>
+          <span class="glyphicon glyphicon-edit"> {{challenge.participations.length}}</span>
+          <span class="glyphicon glyphicon-check"> {{challenge.completedBy.length}}</span>
         </div>
       </div>
     </ul>
