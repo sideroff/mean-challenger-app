@@ -63,9 +63,10 @@ challengeSchema.method({
         this.save(callback)
     },
     completeChallenge: function (userId, callback) {
-        this.removeParticipation(userId, function () {
-            this.completedBy.push(userId)
-            this.save(callback)
+        let that = this
+        that.removeParticipation(userId, function () {
+            that.completedBy.push(userId)
+            that.save(callback)
         })
     }
 })

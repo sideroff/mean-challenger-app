@@ -11,8 +11,10 @@
             <span style="float:right;">{{currentChallenge.dateCreated | date: 'HH:mm, MMM d, y'}}</span>
         </div>
         <div class="panel-footer" ng-controller="usersController">
-            <button ng-if="user && !currentChallenge.hasParticipated" ng-click="participate(currentChallenge)" class="btn btn-default">Participate</button>
-            <button ng-if="user && currentChallenge.hasParticipated" ng-click="unParticipate(currentChallenge)" class="btn btn-default">Cancel participation</button>
+            <button ng-if="user && !currentChallenge.hasParticipated && !currentChallenge.hasCompleted" ng-click="participate(currentChallenge)" class="btn btn-default">Participate</button>
+            <button ng-if="user && currentChallenge.hasParticipated && !currentChallenge.hasCompleted" ng-click="unParticipate(currentChallenge)" class="btn btn-default">Cancel participation</button>
+            <button ng-if="user && currentChallenge.hasParticipated && !currentChallenge.hasCompleted" ng-click="complete(currentChallenge)" class="btn btn-default">Complete challenge</button>
+            <span ng-if="user && currentChallenge.hasCompleted">You have completed this challenge!</span>
         </div>
         <div class="panel-footer">
             <div ng-if="currentChallenge.participations.length > 0">

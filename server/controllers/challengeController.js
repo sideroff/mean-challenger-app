@@ -189,7 +189,7 @@ module.exports = {
             result => {
                 let participation = result.participations.find(p => p.user == req.user._id)
                 if (!participation || !participation.active) {
-                    respond(res, 500, { type: 'error', text: 'You must participate first!' })
+                    respond(res, 500, { type: 'error', text: 'You must participate to this challenge first!' })
                     return
                 }
                 result.removeParticipation(participation, function (err, result) {
@@ -206,7 +206,37 @@ module.exports = {
         )
     },
     complete: (req, res) => {
-
+        let urlName = req.params.urlName
+        Challenge.findOne({ urlName: urlName }).then(
+            result => {
+                if (!result) {
+                    respond(res, 404, { type: 'error', text: 'No challenge with such name found' })
+                    return
+                }
+                let participation = result.participations.find(p => p.user == req.user._id)
+                if (!participation || !participation.active) {
+                    respond(res, 409, { type: 'error', text: 'You must participate to this challenge first!' })
+                    return
+                }
+                result.removeParticipation(participation, function (err, rs) {
+                    if (err) {
+                        respond(res, 500, { type: 'error', text: 'Something went wrong while processing your request!' })
+                        return
+                    }
+                    console.log(result)
+                    result.completeChallenge(req.user._id, function (err, rss) {
+                        if (err) {
+                            respond(res, 500, { type: 'error', text: 'Something went wrong while processing your request!' })
+                            return
+                        }
+                        respond(res, 200, { type: 'success', text: 'You have successfully completed this challenge!' })
+                    })
+                })
+            },
+            err => {
+                respond(res, 500, { type: 'error', text: 'Something went wrong while processing your request!' })
+            }
+        )
     }
 }
 
