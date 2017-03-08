@@ -22,7 +22,6 @@ app.controller('challengesController', function ($rootScope, $scope, $routeParam
                 if ($rootScope.user) {
                     attachHasParticipated(challenge)
                     attachHasCompleted(challenge)
-                    console.log(challenge)
                 }
                 $scope.currentChallenge = challenge
             },
@@ -42,7 +41,7 @@ app.controller('challengesController', function ($rootScope, $scope, $routeParam
     }
 
     function attachHasCompleted(challenge) {
-        let completion = challenge.completedBy.find(c => c.user == $rootScope.user.username)
+        let completion = challenge.completedBy.find(c => c == $rootScope.user.username)
         if (!completion) {
             challenge.hasCompleted = false
         }
@@ -170,7 +169,8 @@ app.controller('challengesController', function ($rootScope, $scope, $routeParam
             },
         }).then(
             result => {
-                console.log(result)
+                popupService.addPopup(result.data)
+                challenge.hasCompleted = true
             },
             err => {                
                 console.log(err)
