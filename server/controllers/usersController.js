@@ -21,6 +21,27 @@ module.exports = {
             }
         )
     },
+    get: (req, res) => {
+        let username = req.params.username
+
+        User.findOne({username: username}).then(
+            result => {
+                if (result) {
+                    let user = {
+                        username: result.username,
+                        dateRegistered: result.dateRegistered
+                    }                    
+                    respond(res, 200, {type: 'success', user: user})
+                }
+                else {
+                    respond(res, 404, {type: 'error', text: 'A user with this username does not exist!'})
+                }                
+            },
+            err => {
+                respond(res, 500, { type: 'error', text: 'Something went wrong while processing your requrest!' })
+            }
+        )
+    },
     register: (req, res) => {
         let salt = encryption.generateSalt()
         let passwordHash = encryption.generateHashedPassword(req.body.password, salt)

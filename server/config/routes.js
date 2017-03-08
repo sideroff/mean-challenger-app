@@ -7,6 +7,7 @@ module.exports = (app, config) => {
     app.get('/api/challenges', controllers.challengeController.index)
     app.get('/api/challenges/:urlName', controllers.challengeController.get)
     app.get('/api/users/check/:username', controllers.usersController.check)
+    app.get('/api/users/:username', controllers.usersController.get)
 
     app.post('/api/login', controllers.usersController.login)
     app.post('/api/register', controllers.usersController.register)

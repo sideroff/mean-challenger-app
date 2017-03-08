@@ -19,7 +19,6 @@
                 <li><a href="{{'/users/' + user.username}}"><span class="glyphicon glyphicon-user"></span> {{user.username}}</a></li>
                 <li><a href="/" ng-click="logout()"><span class="glyphicon glyphicon-log-out"></span> Logout</a></li>
             </ul>
-
             <ul ng-if="!user" class="nav navbar-nav navbar-right">
                 <li><a href="/register"><span class="glyphicon glyphicon-plus-sign"></span> Sign Up</a></li>
                 <li><a href="/login"><span class="glyphicon glyphicon-log-in"></span> Login</a></li>

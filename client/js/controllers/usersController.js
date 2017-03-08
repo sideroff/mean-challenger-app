@@ -1,5 +1,20 @@
-app.controller('usersController', function ($rootScope, $scope, $http, $location, $timeout, userService, popupService) {
+app.controller('usersController', function ($rootScope, $scope, $routeParams, $http, $location, $timeout, userService, popupService) {
     this.user = $rootScope.user
+
+
+    if ($routeParams.username && !$scope.userProfile) {
+        $http({
+            method: 'GET',
+            url: '/api/users/' + $routeParams.username
+        }).then(
+            result => {
+                $scope.userProfile = result.data.user
+            },
+            err => {
+                $scope.err = err.data.text
+            }
+        )
+    }
 
     $scope.register = function () {
         let newUserData = $scope.newUser
