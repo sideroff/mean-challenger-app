@@ -18,8 +18,8 @@ app.controller('usersController', function ($rootScope, $scope, $routeParams, $h
 
     $scope.register = function () {
         let newUserData = $scope.newUser
-
-        if (!newUserData || !newUserData.username || !newUserData.password || !newUserData.confirmPassword) {
+        console.log(newUserData)
+        if (!newUserData || !newUserData.username || !newUserData.password || !newUserData.confirmPassword || !newUserData.email) {
             popupService.addPopup({ type: 'info', text: 'Username, password and confirm password fields are required!' })
             return
         }

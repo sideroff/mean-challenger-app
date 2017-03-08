@@ -20,6 +20,10 @@ let UserSchema = new Schema({
             required: validationMsg
         }
     },
+    email : {
+        type: String,
+        required: validationMsg
+    },
     dateRegistered: {
         type: Date,
         default: Date.now()

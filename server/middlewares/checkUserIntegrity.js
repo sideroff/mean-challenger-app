@@ -18,7 +18,7 @@ module.exports = function (req, res, next) {
     if (newUser.username.length < valVars.user.username.min || newUser.username.length > valVars.user.username.max) {
         respond(res, 400, {
             type: 'error', text: 'Username must be between ' + valVars.user.username.min + ' and ' +
-                valVars.user.username.max + ' characters long!'
+            valVars.user.username.max + ' characters long!'
         })
         return
     }
@@ -26,11 +26,15 @@ module.exports = function (req, res, next) {
     if (newUser.password.length < valVars.user.password.min || newUser.password.length > valVars.user.password.max) {
         respond(res, 400, {
             type: 'error', text: 'Password must be between ' + valVars.user.password.min + ' and ' +
-                valVars.user.password.max + ' characters long!'
+            valVars.user.password.max + ' characters long!'
         })
         return
     }
 
+    // if (!(new RegExp(valVars.user.email.regex)).test(newUser.email)) {
+    //     respond(res, 400, { type: 'error', text: 'Please supply a valid email.' })
+    //     return
+    // }
     // if (!(new RegExp(valVars.user.username.regex)).test(newUser.username)) {
     //     respond(res, 400, { type: 'error', text: 'Username must contain only letters, digits, hyphens and underscores.' })
     //     return

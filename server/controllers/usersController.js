@@ -51,7 +51,8 @@ module.exports = {
             password: {
                 hash: passwordHash,
                 salt: salt
-            }
+            },
+            email: req.body.email 
         }
 
         User.create(newUser).then(
