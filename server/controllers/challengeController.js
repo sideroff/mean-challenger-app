@@ -7,13 +7,13 @@ module.exports = {
         let amount = Number(req.query.amount)
 
         Challenge.find()
-        .sort({ dateCreated: -1})
-        .skip(page > 0 ? ((page - 1) * amount) : 0 )
-        .limit(amount ? amount : 0)
-        .populate({path: 'author', select: 'username'})
-        .populate({path: 'participations.user', select: 'username'})
-        .populate({path: 'completedBy', select: 'username'})
-        .then(
+            .sort({ dateCreated: -1 })
+            .skip(page > 0 ? ((page - 1) * amount) : 0)
+            .limit(amount ? amount : 0)
+            .populate({ path: 'author', select: 'username' })
+            .populate({ path: 'participations.user', select: 'username' })
+            .populate({ path: 'completedBy', select: 'username' })
+            .then(
             result => {
                 respond(res, 200, result)
             },
@@ -25,11 +25,11 @@ module.exports = {
         let urlName = req.params.urlName
         // fml
         Challenge.find()
-        .where({urlName: urlName})
-        .populate({path: 'author', select: 'username'})
-        .populate({path: 'participations.user', select: 'username'})
-        .populate({path: 'completedBy', select: 'username'})
-        .then(
+            .where({ urlName: urlName })
+            .populate({ path: 'author', select: 'username' })
+            .populate({ path: 'participations.user', select: 'username' })
+            .populate({ path: 'completedBy', select: 'username' })
+            .then(
             result => {
                 if (!result || result.length == 0) {
                     respond(res, 404, { type: 'error', text: 'No such challenge found :(' })
@@ -75,8 +75,11 @@ module.exports = {
         let urlName = req.params.urlName
         Challenge.findOne({ 'urlName': urlName }).then(
             result => {
+                if (!result) {
+                    respond(res, 404, { type: 'error', text: 'No such challenge found :(' })
+                    return
+                }
 
-                
                 if (checkIfAlreadyCompleted(result, req.user._id)) {
                     respond(res, 409, { type: 'error', text: 'You have already completed this challenge!' })
                     return
@@ -120,6 +123,11 @@ module.exports = {
         Challenge.findOne({ urlName: urlName }).then(
             result => {
 
+                if (!result) {
+                    respond(res, 404, { type: 'error', text: 'No such challenge found :(' })
+                    return
+                }
+                
                 if (checkIfAlreadyCompleted(result, req.user._id)) {
                     respond(res, 409, { type: 'error', text: 'You have already completed this challenge!' })
                     return
@@ -188,7 +196,7 @@ function checkIfAlreadyCompleted(challenge, userId) {
 
     let alreadyCompleted = challenge.completedBy.find(c => c == userId)
     return alreadyCompleted
-    
+
 }
 
 
